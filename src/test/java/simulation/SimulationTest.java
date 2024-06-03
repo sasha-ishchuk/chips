@@ -1,10 +1,11 @@
 package simulation;
 
+import edu.uj.po.simulation.interfaces.ComponentPinState;
+import org.example.Simulation;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import component.LogicComponent;
-import edu.uj.po.simulation.interfaces.ComponentPinState;
 import edu.uj.po.simulation.interfaces.PinState;
 import edu.uj.po.simulation.interfaces.ShortCircuitException;
 import edu.uj.po.simulation.interfaces.UnknownChip;

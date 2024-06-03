@@ -11,8 +11,7 @@ import edu.uj.po.simulation.interfaces.UnknownChip;
 import edu.uj.po.simulation.interfaces.UnknownComponent;
 import edu.uj.po.simulation.interfaces.UnknownPin;
 import edu.uj.po.simulation.interfaces.UnknownStateException;
-import simulation.Simulation;
-
+import org.example.Simulation;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;

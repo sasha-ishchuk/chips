@@ -1,7 +1,7 @@
 package yehortest;
 
 import org.junit.jupiter.api.BeforeEach;
-import simulation.Simulation;
+import org.example.Simulation;
 
 public class SimulationOptimizationTest {
     private Simulation simulation;
