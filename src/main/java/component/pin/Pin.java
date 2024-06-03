@@ -14,6 +14,8 @@ public class Pin {
     private boolean connectedToInput = false;
     private boolean connectedToOutput = false;
 
+    private boolean stateChanged = false;
+
     private List<PinConnection> connectionsToOtherPins = new ArrayList<>();
 
     public Pin(int id, PinState state, PinType type) {
@@ -42,6 +44,7 @@ public class Pin {
 
     public void setState(PinState state) {
         this.state = state;
+        this.stateChanged = true;
     }
 
     public PinType getType() {
@@ -78,5 +81,17 @@ public class Pin {
 
     public void addConnectionToOtherPins(PinConnection connectionToOtherPins) {
         this.connectionsToOtherPins.add(connectionToOtherPins);
+    }
+
+    public boolean isStateChanged() {
+        return stateChanged;
+    }
+
+    public void setStateChanged(boolean stateChanged) {
+        this.stateChanged = stateChanged;
+    }
+
+    public void resetStateChanged() {
+        this.stateChanged = false;
     }
 }

@@ -26,4 +26,6 @@ public interface LogicComponent extends Publisher, Observer {
     void addConnectedComponentId(int connectedComponentId);
 
     boolean hasStateChanged();
+
+    void resetStateChanged();
 }

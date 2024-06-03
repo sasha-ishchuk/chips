@@ -80,15 +80,24 @@ public abstract class ChipComponent implements LogicComponent {
 
     @Override
     public void updatePinStates(List<ConnectedPinsWithStates> connectedPinsWithStates) {
-        List<Pin> currentPins = getPins();
         for (ConnectedPinsWithStates connectedPin : connectedPinsWithStates) {
-            if (connectedPin.componentId2() == getId() || connectedPin.componentId1() == getId()) {
-                getPin(connectedPin.pinId2()).setState(connectedPin.state2());
+            if (connectedPin.componentId1() == getId()) {
+                Pin pin = getPin(connectedPin.pinId1());
+                if (pin != null && !(pin.getState().equals(connectedPin.state1()))) {
+                    pin.setState(connectedPin.state1());
+                } else if (pin != null) {
+                    pin.setStateChanged(false);
+                }
+            }
+            if (connectedPin.componentId2() == getId()) {
+                Pin pin = getPin(connectedPin.pinId2());
+                if (pin != null && !(pin.getState().equals(connectedPin.state2()))) {
+                    pin.setState(connectedPin.state2());
+                } else if (pin != null) {
+                    pin.setStateChanged(false);
+                }
             }
         }
-//        clearConnectedPinsWithStates();
-        List<Pin> newPins = getPins();
-        setStateChanged(isPinStateChanged(currentPins, newPins));
     }
 
     private boolean isPinStateChanged(List<Pin> pins, List<Pin> newPins) {
@@ -107,7 +116,9 @@ public abstract class ChipComponent implements LogicComponent {
         List<PinState> outputStates = getLogicMatrix().getResult(inputStates);
         List<Pin> outPins = setOutPins();
         for (int i = 0; i < outputStates.size(); i++) {
-            outPins.get(i).setState(outputStates.get(i));
+            Pin pin = outPins.get(i);
+            pin.setState(outputStates.get(i));
+            pin.setStateChanged(false);
         }
         updateConnectedPinsWithStates();
 //        notifyObservers();
@@ -139,10 +150,27 @@ public abstract class ChipComponent implements LogicComponent {
     }
 
     public boolean hasStateChanged() {
-        return stateChanged;
+        List<Pin> currentPins = getPins();
+        for (int i = 0; i < currentPins.size(); i++) {
+            Pin pin = currentPins.get(i);
+            if (pin != null && pin.isStateChanged()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public void setStateChanged(boolean stateChanged) {
         this.stateChanged = stateChanged;
+    }
+
+    public void resetStateChanged() {
+        List<Pin> currentPins = getPins();
+        for (int i = 0; i < currentPins.size(); i++) {
+            Pin pin = currentPins.get(i);
+            if (pin != null) {
+                pin.resetStateChanged();
+            }
+        }
     }
 }

@@ -76,24 +76,24 @@ public abstract class PinHeaderComponent implements LogicComponent {
 
     @Override
     public void updatePinStates(List<ConnectedPinsWithStates> connectedPinsWithStates) {
-        List<Pin> currentPins = getPins();
         for (ConnectedPinsWithStates connectedPin : connectedPinsWithStates) {
-            if (connectedPin.componentId2() == getId() || connectedPin.componentId1() == getId()) {
-                getPin(connectedPin.pinId2()).setState(connectedPin.state2());
+            if (connectedPin.componentId1() == getId()) {
+                Pin pin = getPin(connectedPin.pinId1());
+                if (pin != null && !(pin.getState().equals(connectedPin.state1()))) {
+                    pin.setState(connectedPin.state1());
+                } else if (pin != null) {
+                    pin.setStateChanged(false);
+                }
+            }
+            if (connectedPin.componentId2() == getId()) {
+                Pin pin = getPin(connectedPin.pinId2());
+                if (pin != null && !(pin.getState().equals(connectedPin.state2()))) {
+                    pin.setState(connectedPin.state2());
+                } else if (pin != null) {
+                    pin.setStateChanged(false);
+                }
             }
         }
-//        clearConnectedPinsWithStates();
-        List<Pin> newPins = getPins();
-        setStateChanged(isPinStateChanged(currentPins, newPins));
-    }
-
-    private boolean isPinStateChanged(List<Pin> pins, List<Pin> newPins) {
-        for (int i = 0; i < pins.size(); i++) {
-            if (pins.get(i).getState() != newPins.get(i).getState()) {
-                return true;
-            }
-        }
-        return false;
     }
 
     @Override
@@ -116,10 +116,25 @@ public abstract class PinHeaderComponent implements LogicComponent {
     }
 
     public boolean hasStateChanged() {
-        return stateChanged;
+        for (int i = 1; i <= getSize(); i++) {
+            Pin pin = getPin(i);
+            if (pin != null && pin.isStateChanged()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public void setStateChanged(boolean stateChanged) {
         this.stateChanged = stateChanged;
+    }
+
+    public void resetStateChanged() {
+        for (int i = 1; i <= getSize(); i++) {
+            Pin pin = getPin(i);
+            if (pin != null) {
+                pin.resetStateChanged();
+            }
+        }
     }
 }
