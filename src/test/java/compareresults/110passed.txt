@@ -1,0 +1,134 @@
+popo3.zip
+
+BŁĄD: test7408connectionsB(String, String)[1]> Błędny wynik symulacji
+BŁĄD: test7408connectionsB(String, String)[2]> Błędny wynik symulacji
+BŁĄD: test7408connectionsB(String, String)[3]> Błędny wynik symulacji
+BŁĄD: test7408connectionsB(String, String)[4]> Błędny wynik symulacji
+BŁĄD: test7432connectionsB(String, String)[1]> Błędny wynik symulacji
+BŁĄD: test7432connectionsB(String, String)[2]> Błędny wynik symulacji
+BŁĄD: test7432connectionsB(String, String)[3]> Błędny wynik symulacji
+BŁĄD: test7432connectionsB(String, String)[4]> Błędny wynik symulacji
+BŁĄD: chip7482C0H(String, String)[1]> Błędny wynik symulacji
+BŁĄD: chip7482C0H(String, String)[2]> Błędny wynik symulacji
+BŁĄD: chip7482C0H(String, String)[3]> Błędny wynik symulacji
+BŁĄD: chip7482C0H(String, String)[4]> Błędny wynik symulacji
+BŁĄD: chip7482C0H(String, String)[5]> Błędny wynik symulacji
+BŁĄD: chip7482C0H(String, String)[6]> Błędny wynik symulacji
+BŁĄD: chip7482C0H(String, String)[7]> Błędny wynik symulacji
+BŁĄD: chip7482C0H(String, String)[8]> Błędny wynik symulacji
+BŁĄD: chip7482C0H(String, String)[9]> Błędny wynik symulacji
+BŁĄD: chip7482C0H(String, String)[10]> Błędny wynik symulacji
+BŁĄD: chip7482C0H(String, String)[11]> Błędny wynik symulacji
+BŁĄD: chip7482C0H(String, String)[12]> Błędny wynik symulacji
+BŁĄD: chip7482C0L(String, String)[1]> Błędny wynik symulacji
+BŁĄD: chip7482C0L(String, String)[2]> Błędny wynik symulacji
+BŁĄD: chip7482C0L(String, String)[3]> Błędny wynik symulacji
+BŁĄD: chip7482C0L(String, String)[4]> Błędny wynik symulacji
+BŁĄD: chip7482C0L(String, String)[5]> Błędny wynik symulacji
+BŁĄD: chip7482C0L(String, String)[6]> Błędny wynik symulacji
+BŁĄD: chip7482C0L(String, String)[7]> Błędny wynik symulacji
+BŁĄD: chip7482C0L(String, String)[8]> Błędny wynik symulacji
+BŁĄD: chip7482C0L(String, String)[9]> Błędny wynik symulacji
+BŁĄD: chip7482C0L(String, String)[10]> Błędny wynik symulacji
+BŁĄD: chip7482C0L(String, String)[11]> Błędny wynik symulacji
+BŁĄD: chip7482C0L(String, String)[12]> Błędny wynik symulacji
+BŁĄD: unknownStateMissingInput()> Brak oczekiwanego wyjątku UnknownStateException
+BŁĄD: simpleSimAndOpt01(String, String, int, String)[4]> Metoda optimize zwróciła null
+BŁĄD: simpleSimAndOpt01(String, String, int, String)[5]> Metoda optimize zwróciła null
+BŁĄD: simpleSimAndOpt01(String, String, int, String)[6]> Metoda optimize zwróciła null
+BŁĄD: simpleSimAndOpt02(String, String, int, String)[5]> Metoda optimize zwróciła null
+BŁĄD: simpleSimAndOpt02(String, String, int, String)[6]> Metoda optimize zwróciła null
+BŁĄD: simpleSimAndOpt02(String, String, int, String)[7]> Metoda optimize zwróciła null
+BŁĄD: simpleSimAndOpt02(String, String, int, String)[8]> Metoda optimize zwróciła null
+BŁĄD: simpleSimAndOpt03(String, String, int, String)[3]> Metoda optimize zwróciła null
+BŁĄD: simpleSimAndOpt03(String, String, int, String)[4]> Metoda optimize zwróciła null
+BŁĄD: simpleSimAndOpt04(String, String, int, String)[1]> Błędny wynik symulacji
+BŁĄD: simpleSimAndOpt04(String, String, int, String)[2]> Metoda optimize zwróciła null
+BŁĄD: simpleSimAndOpt04(String, String, int, String)[3]> Błędny wynik symulacji
+BŁĄD: simpleSimAndOpt04(String, String, int, String)[4]> Błędny wynik symulacji
+BŁĄD: simpleSimAndOpt04(String, String, int, String)[5]> Błędny wynik symulacji
+BŁĄD: simpleSimAndOpt04(String, String, int, String)[6]> Błędny wynik symulacji
+BŁĄD: simpleSimAndOpt04(String, String, int, String)[7]> Metoda optimize zwróciła null
+BŁĄD: simpleSimAndOpt04(String, String, int, String)[8]> Metoda optimize zwróciła null
+BŁĄD: simpleSimAndOpt04(String, String, int, String)[9]> Metoda optimize zwróciła null
+BŁĄD: simpleSimAndOpt05(String, String, int, String)[3]> Metoda optimize zwróciła null
+BŁĄD: simpleSimAndOpt05(String, String, int, String)[5]> Metoda optimize zwróciła null
+BŁĄD: simpleSimAndOpt05(String, String, int, String)[11]> Metoda optimize zwróciła null
+BŁĄD: simpleSimAndOpt05(String, String, int, String)[12]> Metoda optimize zwróciła null
+BŁĄD: simpleSimAndOpt05(String, String, int, String)[13]> Metoda optimize zwróciła null
+BŁĄD: simpleSimAndOpt05(String, String, int, String)[14]> Metoda optimize zwróciła null
+BŁĄD: unknownStateSomeDataMissing()> Brak oczekiwanego wyjątku UnknownStateException
+BŁĄD: test7404connectionsB(String, String)[1]> Błędny wynik symulacji
+BŁĄD: test7404connectionsB(String, String)[2]> Błędny wynik symulacji
+BŁĄD: test7404connectionsB(String, String)[3]> Błędny wynik symulacji
+BŁĄD: simulation01(String, String, String)[1]> Błędny wynik symulacji
+BŁĄD: simulation01(String, String, String)[2]> Błędny wynik symulacji
+BŁĄD: simulation03(String, String, String)[1]> Błędny wynik symulacji
+BŁĄD: simulation04(String, String, String)[1]> java.util.concurrent.TimeoutException
+BŁĄD: chip74138(String, String)[1]> Błędny wynik symulacji
+BŁĄD: chip74138(String, String)[2]> Błędny wynik symulacji
+BŁĄD: chip74138(String, String)[3]> Błędny wynik symulacji
+BŁĄD: chip74138(String, String)[4]> Błędny wynik symulacji
+BŁĄD: chip74138(String, String)[5]> Błędny wynik symulacji
+BŁĄD: chip74138(String, String)[6]> Błędny wynik symulacji
+BŁĄD: chip74138(String, String)[7]> Błędny wynik symulacji
+BŁĄD: chip74138(String, String)[8]> Błędny wynik symulacji
+BŁĄD: chip74138(String, String)[9]> Błędny wynik symulacji
+BŁĄD: chip74138(String, String)[10]> Błędny wynik symulacji
+BŁĄD: chip74138(String, String)[11]> Błędny wynik symulacji
+BŁĄD: chip74138(String, String)[12]> Błędny wynik symulacji
+BŁĄD: chip74138(String, String)[13]> Błędny wynik symulacji
+BŁĄD: chip74138(String, String)[14]> Błędny wynik symulacji
+BŁĄD: chip74138(String, String)[15]> Błędny wynik symulacji
+BŁĄD: chip74138(String, String)[16]> Błędny wynik symulacji
+BŁĄD: chip74138(String, String)[17]> Błędny wynik symulacji
+BŁĄD: chip74138(String, String)[18]> Błędny wynik symulacji
+BŁĄD: chip74152(String, int)[1]> Błędny wynik symulacji
+BŁĄD: chip74152(String, int)[2]> Błędny wynik symulacji
+BŁĄD: chip74152(String, int)[3]> Błędny wynik symulacji
+BŁĄD: chip74152(String, int)[4]> Błędny wynik symulacji
+BŁĄD: chip74152(String, int)[5]> Błędny wynik symulacji
+BŁĄD: chip74152(String, int)[6]> Błędny wynik symulacji
+BŁĄD: chip74152(String, int)[7]> Błędny wynik symulacji
+BŁĄD: chip74152(String, int)[8]> Błędny wynik symulacji
+BŁĄD: unknownStateLoop()> Brak oczekiwanego wyjątku UnknownStateException
+BŁĄD: unknownStateNoInput()> Brak oczekiwanego wyjątku UnknownStateException
+BŁĄD: unknownStateNoData()> Brak oczekiwanego wyjątku UnknownStateException
+BŁĄD: test7400connectionsA(String, String)[1]> Błędny wynik symulacji
+BŁĄD: test7400connectionsA(String, String)[2]> Błędny wynik symulacji
+BŁĄD: test7400connectionsA(String, String)[3]> Błędny wynik symulacji
+BŁĄD: test7400connectionsA(String, String)[4]> Błędny wynik symulacji
+BŁĄD: test7400connectionsB(String, String)[1]> Błędny wynik symulacji
+BŁĄD: test7400connectionsB(String, String)[2]> Błędny wynik symulacji
+BŁĄD: test7400connectionsB(String, String)[3]> Błędny wynik symulacji
+BŁĄD: test7400connectionsB(String, String)[4]> Błędny wynik symulacji
+BŁĄD: stationaryStateTest01(String, String)[1]> java.util.concurrent.TimeoutException
+BŁĄD: stationaryStateTest01(String, String)[2]> java.util.concurrent.TimeoutException
+BŁĄD: stationaryStateTest02(String, String)[1]> Błędny wynik symulacji
+BŁĄD: stationaryStateTest02(String, String)[2]> Błędny wynik symulacji
+BŁĄD: stationaryStateTest02(String, String)[3]> Błędny wynik symulacji
+BŁĄD: stationaryStateTest02(String, String)[4]> Błędny wynik symulacji
+BŁĄD: chip7404(String, String)[1]> Błędny wynik symulacji
+BŁĄD: chip7404(String, String)[2]> Błędny wynik symulacji
+BŁĄD: chip7410(String, String)[1]> Błędny wynik symulacji
+BŁĄD: chip7410(String, String)[2]> Błędny wynik symulacji
+BŁĄD: chip7410(String, String)[3]> Błędny wynik symulacji
+BŁĄD: chip7410(String, String)[4]> Błędny wynik symulacji
+BŁĄD: chip7410(String, String)[5]> Błędny wynik symulacji
+BŁĄD: chip7410(String, String)[6]> Błędny wynik symulacji
+BŁĄD: chip7410(String, String)[7]> Błędny wynik symulacji
+BŁĄD: chip7410(String, String)[8]> Błędny wynik symulacji
+BŁĄD: chip7411(String, String)[1]> Błędny wynik symulacji
+BŁĄD: chip7411(String, String)[2]> Błędny wynik symulacji
+BŁĄD: chip7411(String, String)[3]> Błędny wynik symulacji
+BŁĄD: chip7411(String, String)[4]> Błędny wynik symulacji
+BŁĄD: chip7411(String, String)[5]> Błędny wynik symulacji
+BŁĄD: chip7411(String, String)[6]> Błędny wynik symulacji
+BŁĄD: chip7411(String, String)[7]> Błędny wynik symulacji
+BŁĄD: chip7411(String, String)[8]> Błędny wynik symulacji
+BŁĄD: chip7431(String, String)[1]> Błędny wynik symulacji
+BŁĄD: chip7431(String, String)[2]> Błędny wynik symulacji
+BŁĄD: chip7431(String, String)[3]> Błędny wynik symulacji
+BŁĄD: chip7431(String, String)[4]> Błędny wynik symulacji
+BŁĄD: chip7434(String, String)[1]> Błędny wynik symulacji
+BŁĄD: chip7434(String, String)[2]> Błędny wynik symulacji
