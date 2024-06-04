@@ -19,9 +19,6 @@ public class IC7434LogicMatrix extends LogicMatrix {
     }
 
     private PinState simulateIdentity(PinState a) {
-        if (a == PinState.UNKNOWN) {
-            return PinState.UNKNOWN;
-        }
-        return a == PinState.HIGH ? PinState.HIGH : PinState.LOW;
+        return a;
     }
 }

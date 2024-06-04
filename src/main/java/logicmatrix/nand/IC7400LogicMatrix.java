@@ -20,9 +20,9 @@ public class IC7400LogicMatrix extends LogicMatrix {
     private PinState simulateNand2(PinState a, PinState b) {
         if (a == PinState.HIGH && b == PinState.HIGH) {
             return PinState.LOW;
-        } else if (isAllPinStatesKnown(List.of(a, b))) {
-            return PinState.HIGH;
+        } else if (isAnyPinStateUnknown(List.of(a, b))) {
+            return PinState.UNKNOWN;
         }
-        return PinState.UNKNOWN;
+        return PinState.HIGH;
     }
 }

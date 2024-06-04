@@ -26,18 +26,15 @@ public class IC7431LogicMatrix extends LogicMatrix {
     }
 
     private PinState simulateIdentity(PinState a) {
-        if (a == PinState.UNKNOWN) {
-            return PinState.UNKNOWN;
-        }
-        return a == PinState.HIGH ? PinState.HIGH : PinState.LOW;
+        return a;
     }
 
     private PinState simulateNand2(PinState a, PinState b) {
         if (a == PinState.HIGH && b == PinState.HIGH) {
             return PinState.LOW;
-        } else if (isAllPinStatesKnown(List.of(a, b))) {
-            return PinState.HIGH;
+        } else if (isAnyPinStateUnknown(List.of(a, b))) {
+            return PinState.UNKNOWN;
         }
-        return PinState.UNKNOWN;
+        return PinState.HIGH;
     }
 }

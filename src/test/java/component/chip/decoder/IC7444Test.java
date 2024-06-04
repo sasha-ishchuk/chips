@@ -475,7 +475,7 @@ public class IC7444Test {
         // then
         assertEquals(outputPins.size(), 10);
         for (Pin pin : outputPins) {
-            Assertions.assertEquals(pin.getState(), PinState.UNKNOWN);
+            Assertions.assertEquals(pin.getState(), PinState.HIGH);
         }
     }
 }

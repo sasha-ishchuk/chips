@@ -40,10 +40,6 @@ public class IC7410Test {
     @Test
     void testSimulateWithInput() throws UnknownPin {
         // given
-        ic7410.getPin(1).setState(PinState.HIGH);
-        ic7410.getPin(2).setState(PinState.HIGH);
-        ic7410.getPin(13).setState(PinState.HIGH);
-
         ic7410.getPin(3).setState(PinState.HIGH);
         ic7410.getPin(4).setState(PinState.HIGH);
         ic7410.getPin(5).setState(PinState.HIGH);
@@ -51,6 +47,10 @@ public class IC7410Test {
         ic7410.getPin(9).setState(PinState.LOW);
         ic7410.getPin(10).setState(PinState.HIGH);
         ic7410.getPin(11).setState(PinState.HIGH);
+
+        ic7410.getPin(1).setState(PinState.HIGH);
+        ic7410.getPin(2).setState(PinState.HIGH);
+        ic7410.getPin(13).setState(PinState.HIGH);
         // when
         List<Pin> outputPins = ic7410.simulate();
         // then

@@ -3,15 +3,19 @@ package logicmatrix.multiplexer;
 import logicmatrix.LogicMatrix;
 import edu.uj.po.simulation.interfaces.PinState;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class IC74152LogicMatrix extends LogicMatrix {
 
     @Override
     public List<PinState> map(List<PinState> input) {
-        if (!isAllPinStatesKnown(input)) {
-            return List.of(PinState.UNKNOWN);
-        }
+//        if (!isAllPinStatesKnown(input)) {
+//            return List.of(PinState.UNKNOWN);
+//        }
+
+        List<PinState> output = new ArrayList<>();
+
         PinState a = input.get(0);
         PinState b = input.get(1);
         PinState c = input.get(2);
@@ -25,26 +29,32 @@ public class IC74152LogicMatrix extends LogicMatrix {
         PinState d7 = input.get(10);
 
         if (a.equals(PinState.LOW) && b.equals(PinState.LOW) && c.equals(PinState.LOW)) {
-            return List.of(simulateNot(d0));
+            output.add(simulateNot(d0));
         } else if (a.equals(PinState.HIGH) && b.equals(PinState.LOW) && c.equals(PinState.LOW)) {
-            return List.of(simulateNot(d1));
+            output.add(simulateNot(d1));
         } else if (a.equals(PinState.LOW) && b.equals(PinState.HIGH) && c.equals(PinState.LOW)) {
-            return List.of(simulateNot(d2));
+            output.add(simulateNot(d2));
         } else if (a.equals(PinState.HIGH) && b.equals(PinState.HIGH) && c.equals(PinState.LOW)) {
-            return List.of(simulateNot(d3));
+            output.add(simulateNot(d3));
         } else if (a.equals(PinState.LOW) && b.equals(PinState.LOW) && c.equals(PinState.HIGH)) {
-            return List.of(simulateNot(d4));
+            output.add(simulateNot(d4));
         } else if (a.equals(PinState.HIGH) && b.equals(PinState.LOW) && c.equals(PinState.HIGH)) {
-            return List.of(simulateNot(d5));
+            output.add(simulateNot(d5));
         } else if (a.equals(PinState.LOW) && b.equals(PinState.HIGH) && c.equals(PinState.HIGH)) {
-            return List.of(simulateNot(d6));
+            output.add(simulateNot(d6));
         } else if (a.equals(PinState.HIGH) && b.equals(PinState.HIGH) && c.equals(PinState.HIGH)) {
-            return List.of(simulateNot(d7));
+            output.add(simulateNot(d7));
+        } else {
+            output.add(PinState.UNKNOWN);
         }
-        return null;
+
+        return output;
     }
 
     private PinState simulateNot(PinState a) {
+        if (a == PinState.UNKNOWN) {
+            return PinState.UNKNOWN;
+        }
         return a == PinState.HIGH ? PinState.LOW : PinState.HIGH;
     }
 }

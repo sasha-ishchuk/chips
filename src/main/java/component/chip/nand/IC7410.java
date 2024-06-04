@@ -30,18 +30,21 @@ public class IC7410 extends ChipComponent {
     @Override
     public List<Pin> setDefaultPins() {
         List<Pin> defaultPins = this.getPins();
-        defaultPins.add(new Pin(1, PinState.UNKNOWN, PinType.IN));
-        defaultPins.add(new Pin(2, PinState.UNKNOWN, PinType.IN));
+
         defaultPins.add(new Pin(3, PinState.UNKNOWN, PinType.IN));
         defaultPins.add(new Pin(4, PinState.UNKNOWN, PinType.IN));
         defaultPins.add(new Pin(5, PinState.UNKNOWN, PinType.IN));
         defaultPins.add(new Pin(6, PinState.UNKNOWN, PinType.OUT));
-        defaultPins.add(new Pin(8, PinState.UNKNOWN, PinType.OUT));
+
         defaultPins.add(new Pin(9, PinState.UNKNOWN, PinType.IN));
         defaultPins.add(new Pin(10, PinState.UNKNOWN, PinType.IN));
         defaultPins.add(new Pin(11, PinState.UNKNOWN, PinType.IN));
-        defaultPins.add(new Pin(12, PinState.UNKNOWN, PinType.OUT));
+        defaultPins.add(new Pin(8, PinState.UNKNOWN, PinType.OUT));
+
+        defaultPins.add(new Pin(1, PinState.UNKNOWN, PinType.IN));
+        defaultPins.add(new Pin(2, PinState.UNKNOWN, PinType.IN));
         defaultPins.add(new Pin(13, PinState.UNKNOWN, PinType.IN));
+        defaultPins.add(new Pin(12, PinState.UNKNOWN, PinType.OUT));
         return defaultPins;
     }
 

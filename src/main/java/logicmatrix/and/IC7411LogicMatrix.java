@@ -18,9 +18,9 @@ public class IC7411LogicMatrix extends LogicMatrix {
     private PinState simulateNand3(PinState a, PinState b, PinState c) {
         if (a == PinState.HIGH && b == PinState.HIGH && c == PinState.HIGH) {
             return PinState.HIGH;
-        } else if (isAllPinStatesKnown(List.of(a, b, c))) {
-            return PinState.LOW;
+        } else if (isAnyPinStateUnknown(List.of(a, b, c))) {
+            return PinState.UNKNOWN;
         }
-        return PinState.UNKNOWN;
+        return PinState.LOW;
     }
 }

@@ -36,8 +36,6 @@ public class IC7442LogicMatrix extends LogicMatrix {
             output.set(8, PinState.LOW);
         } else if (a == PinState.HIGH && b == PinState.LOW && c == PinState.LOW && d == PinState.HIGH) {
             output.set(9, PinState.LOW);
-        } else if (!isAllPinStatesKnown(List.of(a, b, c, d))) {
-            return Collections.nCopies(10, PinState.UNKNOWN);
         }
         return output;
     }

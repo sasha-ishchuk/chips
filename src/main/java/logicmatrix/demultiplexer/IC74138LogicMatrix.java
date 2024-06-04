@@ -10,9 +10,9 @@ import java.util.List;
 public class IC74138LogicMatrix extends LogicMatrix {
     @Override
     public List<PinState> map(List<PinState> input) {
-        if (!isAllPinStatesKnown(input)) {
-            return Collections.nCopies(8, PinState.UNKNOWN);
-        }
+//        if (!isAllPinStatesKnown(input)) {
+//            return Collections.nCopies(8, PinState.UNKNOWN);
+//        }
         PinState notG2 = getNotG2Input(input.get(3), input.get(4));
         PinState a = input.get(0);
         PinState b = input.get(1);
@@ -27,7 +27,7 @@ public class IC74138LogicMatrix extends LogicMatrix {
         if (notG2.equals(PinState.LOW) && g1.equals(PinState.HIGH)) {
             return simulateWhenNotG2LowAndG1High(a, b, c);
         }
-        return null;
+        return new ArrayList<>(Collections.nCopies(8, PinState.UNKNOWN));
     }
 
     private List<PinState> simulateWhenNotG2LowAndG1High(PinState a, PinState b, PinState c) {
@@ -67,6 +67,8 @@ public class IC74138LogicMatrix extends LogicMatrix {
     private PinState simulateAnd(PinState a, PinState b) {
         if (a == PinState.HIGH && b == PinState.HIGH) {
             return PinState.HIGH;
+        } if (isAnyPinStateUnknown(List.of(a, b))) {
+            return PinState.UNKNOWN;
         }
         return PinState.LOW;
     }
