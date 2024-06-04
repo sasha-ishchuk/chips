@@ -128,10 +128,17 @@ public abstract class ChipComponent implements LogicComponent {
     private void updateConnectedPinsWithStates() {
         List<ConnectedPinsWithStates> newConnectedPinsWithStates = new ArrayList<>();
         for (ConnectedPinsWithStates connectedPin : getConnectedPinsWithStates()) {
-            PinState newState = getPin(connectedPin.pinId1()).getState();
-            newConnectedPinsWithStates.add(new ConnectedPinsWithStates(
-                    connectedPin.componentId1(), connectedPin.pinId1(), newState,
-                    connectedPin.componentId2(), connectedPin.pinId2(), newState));
+            if (connectedPin.componentId1() == getId()) {
+                PinState newState = getPin(connectedPin.pinId1()).getState();
+                newConnectedPinsWithStates.add(new ConnectedPinsWithStates(
+                        connectedPin.componentId1(), connectedPin.pinId1(), newState,
+                        connectedPin.componentId2(), connectedPin.pinId2(), newState));
+            } else if (connectedPin.componentId2() == getId()) {
+                PinState newState = getPin(connectedPin.pinId2()).getState();
+                newConnectedPinsWithStates.add(new ConnectedPinsWithStates(
+                        connectedPin.componentId1(), connectedPin.pinId1(), newState,
+                        connectedPin.componentId2(), connectedPin.pinId2(), newState));
+            }
         }
         clearConnectedPinsWithStates();
         setConnectedPinsWithStates(newConnectedPinsWithStates);

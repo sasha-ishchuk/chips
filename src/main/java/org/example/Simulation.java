@@ -52,10 +52,7 @@ public class Simulation implements UserInterface {
     PinHeaderCreator pinHeaderCreator;
 
     Map<Integer, LogicComponent> components = new HashMap<>();
-    List<Map<Integer, Integer>> connectedComponentIds = new ArrayList<>();
     Map<Integer, Map<PinConnection, PinConnection>> pinConnections = new HashMap<>();
-    List<PinConnection> pinsInConnection = new ArrayList<>();
-    List<Integer> componentOrder = new ArrayList<>();
     List<ConnectedPinsWithStates> connectedPinsWithStates = new ArrayList<>();
 
     @Override
@@ -110,6 +107,7 @@ public class Simulation implements UserInterface {
 
     @Override
     public void connect(int component1, int pin1, int component2, int pin2) throws UnknownComponent, UnknownPin, ShortCircuitException {
+        // check connected components exist
         if (!components.containsKey(component1)) {
             throw new UnknownComponent(component1);
         }
@@ -119,6 +117,7 @@ public class Simulation implements UserInterface {
         LogicComponent c1 = components.get(component1);
         LogicComponent c2 = components.get(component2);
 
+        // check connected pins exist
         Pin p1, p2;
         try {
             p1 = c1.getPin(pin1);
@@ -127,6 +126,7 @@ public class Simulation implements UserInterface {
             throw new UnknownPin(component1, pin1);
         }
 
+        // check connections
         if ((p1.getType().equals(PinType.IN) && p1.isConnectedToOutput()) &&
                 (p2.getType().equals(PinType.IN) && p2.isConnectedToOutput())) {
             throw new ShortCircuitException();
@@ -144,12 +144,12 @@ public class Simulation implements UserInterface {
             throw new ShortCircuitException();
         }
 
+        // set connected to input/output
         if (p1.getType().equals(PinType.OUT)) {
             p2.setConnectedToOutput(true);
         } else if (p1.getType().equals(PinType.IN)) {
             p2.setConnectedToInput(true);
         }
-
         if (p2.getType().equals(PinType.OUT)) {
             p1.setConnectedToOutput(true);
         } else if (p2.getType().equals(PinType.IN)) {
@@ -162,26 +162,15 @@ public class Simulation implements UserInterface {
         c1.addConnectedComponentId(component2);
         c2.addConnectedComponentId(component1);
 
-        c1.addObserver(c2);
-        c2.addObserver(c1);
-
-        if (!containsComponentPair(component1, component2)) {
-            connectedComponentIds.add(Map.of(component1, component2));
-            componentOrder.add(component1);
-        }
-
         connectedPinsWithStates.add(new ConnectedPinsWithStates(
                 component1, pin1, p1.getState(),
                 component2, pin2, p2.getState()
         ));
 
         pinConnections.put(connectionId++, Map.of(new PinConnection(component1, pin1), new PinConnection(component2, pin2)));
-        if (notContainsPin(new PinConnection(component1, pin1))) {
-            pinsInConnection.add(new PinConnection(component1, pin1));
-        }
-        if (notContainsPin(new PinConnection(component2, pin2))) {
-            pinsInConnection.add(new PinConnection(component2, pin2));
-        }
+
+        c1.addObserver(c2);
+        c2.addObserver(c1);
     }
 
     @Override
@@ -209,6 +198,7 @@ public class Simulation implements UserInterface {
     @Override
     public Map<Integer, Set<ComponentPinState>> simulation(Set<ComponentPinState> states0, int ticks) throws UnknownStateException {
         Map<Integer, Set<ComponentPinState>> result = new HashMap<>();
+        result.put(0, getStatesForTick());
         // set new input states to Input Pins
         for (ComponentPinState state : states0) {
             int componentId = state.componentId();
@@ -223,7 +213,6 @@ public class Simulation implements UserInterface {
         LogicComponent inPinHeader = components.get(currComponentId);
         inPinHeader.setConnectedPinsWithStates(getConnectionsFromChip(currComponentId));
         inPinHeader.simulate();
-        result.put(0, getStatesForTick());
 
         // list of components connected to InPinHeader
         Set<Integer> connectedComponents = inPinHeader.getConnectedComponentsIds();
@@ -241,6 +230,17 @@ public class Simulation implements UserInterface {
 
     private Set<Integer> simulateForComponents(Set<Integer> connectedComponents) {
         Set<Integer> newConnectedComponents = new HashSet<>();
+
+//        for (LogicComponent component : components.values()) {
+//            component.setConnectedPinsWithStates(getConnectionsFromChip(component.getId()));
+//            component.simulate();
+//            newConnectedComponents.addAll(component.getConnectedComponentsIds());
+//        }
+//
+//        for (LogicComponent component : components.values()) {
+//            component.notifyObservers();
+//        }
+
         for (int componentId : connectedComponents) {
             LogicComponent component = components.get(componentId);
             component.setConnectedPinsWithStates(getConnectionsFromChip(componentId));
@@ -271,18 +271,11 @@ public class Simulation implements UserInterface {
         return -1;
     }
 
-    private Map<Integer, LogicComponent> removeComponent(int componentId) {
-        Map<Integer, LogicComponent> newComponents = new HashMap<>(components);
-        newComponents.remove(componentId);
-        return newComponents;
-    }
-
     private Set<ComponentPinState> getStatesForTick() {
         Set<ComponentPinState> states = new HashSet<>();
-        for (PinConnection pin : pinsInConnection) {
-            if (components.get(pin.componentId()).getComponentType().equals(ComponentType.OUT_PIN_HEADER)) {
-                states.add(new ComponentPinState(pin.componentId(), pin.pinId(), components.get(pin.componentId()).getPin(pin.pinId()).getState()));
-            }
+        LogicComponent outPinHeader = components.get(getOutPinHeaderId());
+        for (Pin pin : outPinHeader.getPins()) {
+            states.add(new ComponentPinState(outPinHeader.getId(), pin.getId(), pin.getState()));
         }
         return states;
     }
@@ -292,27 +285,11 @@ public class Simulation implements UserInterface {
         for (ConnectedPinsWithStates connection : connectedPinsWithStates) {
             if (connection.componentId1() == chipId) {
                 connections.add(connection);
+            } else if (connection.componentId2() == chipId) {
+                connections.add(connection);
             }
         }
         return connections;
-    }
-
-    private boolean containsComponentPair(int component1, int component2) {
-        for (Map<Integer, Integer> pair : connectedComponentIds) {
-            if (pair.containsKey(component1) && pair.containsValue(component2)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private boolean notContainsPin(PinConnection pinConnection) {
-        for (PinConnection pin : pinsInConnection) {
-            if (pin.componentId()== pinConnection.componentId() && pin.pinId() == pinConnection.pinId()){
-                return false;
-            }
-        }
-        return true;
     }
 
     public LogicComponent getComponentById(int id) {

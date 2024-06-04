@@ -145,6 +145,52 @@ public class StationaryStateTest {
     }
 
     @Test
+    public void testStationaryState_forAndAndNot_1_reverseConnections() throws UnknownChip, UnknownPin, ShortCircuitException, UnknownComponent, UnknownStateException {
+        int inPinHeaderId = userInterface.createInputPinHeader(3);
+        Set<ComponentPinState> componentPinStates = Set.of(
+                new ComponentPinState(inPinHeaderId, 1, PinState.HIGH), // we1
+                new ComponentPinState(inPinHeaderId, 2, PinState.LOW), // we2
+                new ComponentPinState(inPinHeaderId, 3, PinState.HIGH) // we4
+        );
+        int and7408 = userInterface.createChip(7408);
+        int not7404 = userInterface.createChip(7404);
+
+        int outPinHeaderId = userInterface.createOutputPinHeader(4);
+
+        userInterface.connect(and7408, 13, inPinHeaderId, 1);
+        userInterface.connect(and7408, 12, inPinHeaderId, 2);
+        userInterface.connect(and7408, 4, inPinHeaderId, 3);
+        userInterface.connect(and7408, 11, not7404, 13);
+
+        userInterface.connect(not7404, 12, not7404, 11);
+        userInterface.connect(not7404, 12, and7408, 5);
+
+        userInterface.connect(outPinHeaderId, 1, and7408, 11);
+        userInterface.connect(outPinHeaderId, 2, not7404, 12);
+        userInterface.connect(outPinHeaderId, 3, not7404, 10);
+        userInterface.connect(outPinHeaderId, 4, and7408, 6);
+
+        userInterface.stationaryState(componentPinStates);
+        LogicComponent outPinHeader = userInterface.getComponentById(outPinHeaderId);
+        Assertions.assertEquals(PinState.LOW, outPinHeader.getPin(1).getState());
+        Assertions.assertEquals(PinState.HIGH, outPinHeader.getPin(2).getState());
+        Assertions.assertEquals(PinState.LOW, outPinHeader.getPin(3).getState());
+        Assertions.assertEquals(PinState.HIGH, outPinHeader.getPin(4).getState());
+        /*
+        -> ok (zgadza się z przykładem Oramusa)
+
+        1, 11: LOW -> 3, 1: LOW (wy1)
+
+        2, 12: HIGH -> 3, 2: HIGH (wy2)
+
+        2, 10: LOW -> 3, 3: LOW (wy3)
+
+        1, 6: HIGH -> 3, 4: HIGH (wy4)
+
+         */
+    }
+
+    @Test
     public void testStationaryState_forAndAndNot_2() throws UnknownChip, UnknownPin, ShortCircuitException, UnknownComponent, UnknownStateException {
         int inPinHeaderId = userInterface.createInputPinHeader(3);
         Set<ComponentPinState> componentPinStates = Set.of(
