@@ -1,6 +1,7 @@
 package component;
 
 import component.pin.Pin;
+import component.pin.PinType;
 import component.records.ConnectedPinsWithStates;
 import edu.uj.po.simulation.interfaces.PinState;
 
@@ -74,13 +75,59 @@ public abstract class PinHeaderComponent implements LogicComponent {
 //        }
 //    }
 
+//    @Override
+//    public void updatePinStates(List<ConnectedPinsWithStates> connectedPinsWithStates) {
+//        for (ConnectedPinsWithStates connectedPin : connectedPinsWithStates) {
+//            if (connectedPin.componentId1() == getId()) {
+//                Pin pin = getPin(connectedPin.pinId1());
+//                if (pin != null && !(pin.getState().equals(connectedPin.state1()))) {
+//                    pin.setState(connectedPin.state1());
+//                } else if (pin != null) {
+//                    pin.setStateChanged(false);
+//                }
+//            }
+//            if (connectedPin.componentId2() == getId()) {
+//                Pin pin = getPin(connectedPin.pinId2());
+//                if (pin != null && !(pin.getState().equals(connectedPin.state2()))) {
+//                    pin.setState(connectedPin.state2());
+//                } else if (pin != null) {
+//                    pin.setStateChanged(false);
+//                }
+//            }
+//        }
+//    }
+
+    private List<Pin> pinsToUpdateInNextCycle = new ArrayList<>();
+
+    public List<Pin> getPinsToUpdateInNextCycle() {
+        return pinsToUpdateInNextCycle;
+    }
+
+    public void setPinsToUpdateInNextCycle(List<Pin> pinsToUpdateInNextCycle) {
+        this.pinsToUpdateInNextCycle = pinsToUpdateInNextCycle;
+    }
+
     @Override
     public void updatePinStates(List<ConnectedPinsWithStates> connectedPinsWithStates) {
+        List<Pin> updateLater = new ArrayList<>();
+
+        if (!getPinsToUpdateInNextCycle().isEmpty()) {
+            for (Pin pin : getPinsToUpdateInNextCycle()) {
+                getPin(pin.getId()).setState(pin.getState());
+            }
+            setPinsToUpdateInNextCycle(new ArrayList<>());
+        }
+
+
         for (ConnectedPinsWithStates connectedPin : connectedPinsWithStates) {
             if (connectedPin.componentId1() == getId()) {
                 Pin pin = getPin(connectedPin.pinId1());
                 if (pin != null && !(pin.getState().equals(connectedPin.state1()))) {
-                    pin.setState(connectedPin.state1());
+                    if (pin.getType() == PinType.OUT) {
+                        updateLater.add(pin);
+                    } else {
+                        pin.setState(connectedPin.state1());
+                    }
                 } else if (pin != null) {
                     pin.setStateChanged(false);
                 }
@@ -88,12 +135,17 @@ public abstract class PinHeaderComponent implements LogicComponent {
             if (connectedPin.componentId2() == getId()) {
                 Pin pin = getPin(connectedPin.pinId2());
                 if (pin != null && !(pin.getState().equals(connectedPin.state2()))) {
-                    pin.setState(connectedPin.state2());
+                    if (pin.getType() == PinType.OUT) {
+                        updateLater.add(pin);
+                    } else {
+                        pin.setState(connectedPin.state2());
+                    }
                 } else if (pin != null) {
                     pin.setStateChanged(false);
                 }
             }
         }
+        setPinsToUpdateInNextCycle(updateLater);
     }
 
     @Override
