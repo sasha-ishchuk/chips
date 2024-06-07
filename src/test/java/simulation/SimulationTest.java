@@ -126,6 +126,85 @@ public class SimulationTest {
     }
 
     @Test
+    public void testSimulation_forAndAndNot_oramusExample_reverseConnection() throws UnknownChip, UnknownPin, ShortCircuitException, UnknownComponent, UnknownStateException {
+        // create components
+        int inPinHeaderId = userInterface.createInputPinHeader(3);
+        int and7408 = userInterface.createChip(7408);
+        int not7404 = userInterface.createChip(7404);
+        int outPinHeaderId = userInterface.createOutputPinHeader(4);
+
+        userInterface.connect(inPinHeaderId, 1, and7408, 13);
+        userInterface.connect(inPinHeaderId, 2, and7408, 12);
+        userInterface.connect(inPinHeaderId, 3, and7408, 4);
+
+        userInterface.connect(not7404, 13, and7408, 11);
+        userInterface.connect(not7404, 11, not7404, 12);
+        userInterface.connect(and7408, 5, not7404, 12);
+
+        userInterface.connect(and7408, 11, outPinHeaderId, 1);
+        userInterface.connect(not7404, 12, outPinHeaderId, 2);
+        userInterface.connect(not7404, 10, outPinHeaderId, 3);
+        userInterface.connect(and7408, 6, outPinHeaderId, 4);
+
+        Set<ComponentPinState> componentPinStates = Set.of(
+                new ComponentPinState(inPinHeaderId, 1, PinState.HIGH), // we1
+                new ComponentPinState(inPinHeaderId, 2, PinState.LOW), // we2
+                new ComponentPinState(inPinHeaderId, 3, PinState.HIGH) // we4
+        );
+        userInterface.stationaryState(componentPinStates);
+
+        Set<ComponentPinState> states0 = Set.of(
+                new ComponentPinState(inPinHeaderId, 1, PinState.HIGH), // we1
+                new ComponentPinState(inPinHeaderId, 2, PinState.HIGH), // we2
+                new ComponentPinState(inPinHeaderId, 3, PinState.HIGH) // we4
+        );
+
+        // simulate
+        Map<Integer, Set<ComponentPinState>> result = userInterface.simulation(states0, 3);
+        assertEquals(4, result.size());
+        assertTrue(result.containsKey(0)); // tick 0
+        assertTrue(result.containsKey(1)); // tick 1
+        assertTrue(result.containsKey(2)); // tick 2
+        assertTrue(result.containsKey(3)); // tick 3
+
+        Set<ComponentPinState> statesTick0 = result.get(0);
+        assertTrue(statesTick0.contains(new ComponentPinState(outPinHeaderId, 1, PinState.LOW)));
+        assertTrue(statesTick0.contains(new ComponentPinState(outPinHeaderId, 2, PinState.HIGH)));
+        assertTrue(statesTick0.contains(new ComponentPinState(outPinHeaderId, 3, PinState.LOW)));
+        assertTrue(statesTick0.contains(new ComponentPinState(outPinHeaderId, 4, PinState.HIGH)));
+
+        Set<ComponentPinState> statesTick1 = result.get(1);
+        assertTrue(statesTick1.contains(new ComponentPinState(outPinHeaderId, 1, PinState.HIGH)));
+        assertTrue(statesTick1.contains(new ComponentPinState(outPinHeaderId, 2, PinState.HIGH)));
+        assertTrue(statesTick1.contains(new ComponentPinState(outPinHeaderId, 3, PinState.LOW)));
+        assertTrue(statesTick1.contains(new ComponentPinState(outPinHeaderId, 4, PinState.HIGH)));
+
+        Set<ComponentPinState> statesTick2 = result.get(2);
+        assertTrue(statesTick2.contains(new ComponentPinState(outPinHeaderId, 1, PinState.HIGH)));
+        assertTrue(statesTick2.contains(new ComponentPinState(outPinHeaderId, 2, PinState.LOW)));
+        assertTrue(statesTick2.contains(new ComponentPinState(outPinHeaderId, 3, PinState.LOW)));
+        assertTrue(statesTick2.contains(new ComponentPinState(outPinHeaderId, 4, PinState.HIGH)));
+
+        Set<ComponentPinState> statesTick3 = result.get(3);
+        assertTrue(statesTick3.contains(new ComponentPinState(outPinHeaderId, 1, PinState.HIGH)));
+        assertTrue(statesTick3.contains(new ComponentPinState(outPinHeaderId, 2, PinState.LOW)));
+        assertTrue(statesTick3.contains(new ComponentPinState(outPinHeaderId, 3, PinState.HIGH)));
+        assertTrue(statesTick3.contains(new ComponentPinState(outPinHeaderId, 4, PinState.LOW)));
+
+        /*
+                    0	Tick1	Tick2	Tick3
+            We1 	HI 	  HI	  HI	 HI
+            We2 	HI	  HI	  HI	 HI
+            We3 	HI	  HI	  LO	 LO
+            We4 	HI	  HI	  HI	 HI
+            1   	LO	  HI	  HI	 HI
+            2   	HI	  HI	  LO	 LO
+            3   	LO	  LO	  LO	 HI
+            4   	HI	  HI	  HI	 LO
+        */
+    }
+
+    @Test
     public void testSimulation_forThreeAnd_oramusExampleForDeleteComponent() throws UnknownChip, UnknownPin, ShortCircuitException, UnknownComponent, UnknownStateException {
         // create components
         int inPinHeaderId = userInterface.createInputPinHeader(7);
