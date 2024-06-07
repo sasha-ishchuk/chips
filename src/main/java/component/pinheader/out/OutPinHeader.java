@@ -2,6 +2,7 @@ package component.pinheader.out;
 
 import component.ComponentType;
 import component.PinHeaderComponent;
+import component.pin.InputPin;
 import component.pin.Pin;
 import component.pin.PinType;
 
@@ -24,7 +25,7 @@ public class OutPinHeader extends PinHeaderComponent {
     public List<Pin> setDefaultPins() {
         List<Pin> pins = new ArrayList<>();
         for (int i = 0; i < size; i++) {
-            pins.add(new Pin(i + 1, PinType.IN));
+            pins.add(new InputPin(i + 1, PinType.IN));
         }
         return pins;
     }

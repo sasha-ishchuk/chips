@@ -3,6 +3,8 @@ package component.chip.not;
 import component.ChipComponent;
 import component.ComponentType;
 import component.chip.ChipType;
+import component.pin.InputPin;
+import component.pin.OutputPin;
 import component.pin.Pin;
 import component.pin.PinType;
 import edu.uj.po.simulation.interfaces.PinState;
@@ -30,18 +32,18 @@ public class IC7404 extends ChipComponent {
     @Override
     public List<Pin> setDefaultPins() {
         List<Pin> defaultPins = new ArrayList<>();
-        defaultPins.add(new Pin(1, PinState.UNKNOWN, PinType.IN));
-        defaultPins.add(new Pin(2, PinState.UNKNOWN, PinType.OUT));
-        defaultPins.add(new Pin(3, PinState.UNKNOWN, PinType.IN));
-        defaultPins.add(new Pin(4, PinState.UNKNOWN, PinType.OUT));
-        defaultPins.add(new Pin(5, PinState.UNKNOWN, PinType.IN));
-        defaultPins.add(new Pin(6, PinState.UNKNOWN, PinType.OUT));
-        defaultPins.add(new Pin(8, PinState.UNKNOWN, PinType.OUT));
-        defaultPins.add(new Pin(9, PinState.UNKNOWN, PinType.IN));
-        defaultPins.add(new Pin(10, PinState.UNKNOWN, PinType.OUT));
-        defaultPins.add(new Pin(11, PinState.UNKNOWN, PinType.IN));
-        defaultPins.add(new Pin(12, PinState.UNKNOWN, PinType.OUT));
-        defaultPins.add(new Pin(13, PinState.UNKNOWN, PinType.IN));
+        defaultPins.add(new InputPin(1, PinState.UNKNOWN, PinType.IN));
+        defaultPins.add(new OutputPin(2, PinState.UNKNOWN, PinType.OUT));
+        defaultPins.add(new InputPin(3, PinState.UNKNOWN, PinType.IN));
+        defaultPins.add(new OutputPin(4, PinState.UNKNOWN, PinType.OUT));
+        defaultPins.add(new InputPin(5, PinState.UNKNOWN, PinType.IN));
+        defaultPins.add(new OutputPin(6, PinState.UNKNOWN, PinType.OUT));
+        defaultPins.add(new OutputPin(8, PinState.UNKNOWN, PinType.OUT));
+        defaultPins.add(new InputPin(9, PinState.UNKNOWN, PinType.IN));
+        defaultPins.add(new OutputPin(10, PinState.UNKNOWN, PinType.OUT));
+        defaultPins.add(new InputPin(11, PinState.UNKNOWN, PinType.IN));
+        defaultPins.add(new OutputPin(12, PinState.UNKNOWN, PinType.OUT));
+        defaultPins.add(new InputPin(13, PinState.UNKNOWN, PinType.IN));
         return defaultPins;
     }
 

@@ -2,6 +2,8 @@ package component.chip.multiplexer;
 
 import component.ComponentType;
 import component.chip.ChipType;
+import component.pin.InputPin;
+import component.pin.OutputPin;
 import component.pin.Pin;
 import component.pin.PinType;
 import component.ChipComponent;
@@ -30,20 +32,20 @@ public class IC74152 extends ChipComponent {
     @Override
     public List<Pin> setDefaultPins() {
         List<Pin> defaultPins = new ArrayList<>();
-        defaultPins.add(new Pin(10, PinState.UNKNOWN, PinType.IN)); // A
-        defaultPins.add(new Pin(9, PinState.UNKNOWN, PinType.IN)); // B
-        defaultPins.add(new Pin(8, PinState.UNKNOWN, PinType.IN)); // C
+        defaultPins.add(new InputPin(10, PinState.UNKNOWN, PinType.IN)); // A
+        defaultPins.add(new InputPin(9, PinState.UNKNOWN, PinType.IN)); // B
+        defaultPins.add(new InputPin(8, PinState.UNKNOWN, PinType.IN)); // C
 
-        defaultPins.add(new Pin(5, PinState.UNKNOWN, PinType.IN)); // D0
-        defaultPins.add(new Pin(4, PinState.UNKNOWN, PinType.IN)); // D1
-        defaultPins.add(new Pin(3, PinState.UNKNOWN, PinType.IN)); // D2
-        defaultPins.add(new Pin(2, PinState.UNKNOWN, PinType.IN)); // D3
-        defaultPins.add(new Pin(1, PinState.UNKNOWN, PinType.IN)); // D4
-        defaultPins.add(new Pin(13, PinState.UNKNOWN, PinType.IN)); // D5
-        defaultPins.add(new Pin(12, PinState.UNKNOWN, PinType.IN)); // D6
-        defaultPins.add(new Pin(11, PinState.UNKNOWN, PinType.IN)); // D7
+        defaultPins.add(new InputPin(5, PinState.UNKNOWN, PinType.IN)); // D0
+        defaultPins.add(new InputPin(4, PinState.UNKNOWN, PinType.IN)); // D1
+        defaultPins.add(new InputPin(3, PinState.UNKNOWN, PinType.IN)); // D2
+        defaultPins.add(new InputPin(2, PinState.UNKNOWN, PinType.IN)); // D3
+        defaultPins.add(new InputPin(1, PinState.UNKNOWN, PinType.IN)); // D4
+        defaultPins.add(new InputPin(13, PinState.UNKNOWN, PinType.IN)); // D5
+        defaultPins.add(new InputPin(12, PinState.UNKNOWN, PinType.IN)); // D6
+        defaultPins.add(new InputPin(11, PinState.UNKNOWN, PinType.IN)); // D7
 
-        defaultPins.add(new Pin(6, PinState.UNKNOWN, PinType.OUT)); // W
+        defaultPins.add(new OutputPin(6, PinState.UNKNOWN, PinType.OUT)); // W
         return defaultPins;
     }
 

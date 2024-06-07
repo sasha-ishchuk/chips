@@ -2,6 +2,8 @@ package component.chip.adder;
 
 import component.ComponentType;
 import component.chip.ChipType;
+import component.pin.InputPin;
+import component.pin.OutputPin;
 import component.pin.Pin;
 import component.pin.PinType;
 import component.ChipComponent;
@@ -30,15 +32,15 @@ public class IC7482 extends ChipComponent {
     @Override
     public List<Pin> setDefaultPins() {
         List<Pin> defaultPins = new ArrayList<>();
-        defaultPins.add(new Pin(2, PinState.UNKNOWN, PinType.IN)); // A1
-        defaultPins.add(new Pin(3, PinState.UNKNOWN, PinType.IN)); // B1
-        defaultPins.add(new Pin(5, PinState.UNKNOWN, PinType.IN)); // C0
-        defaultPins.add(new Pin(13, PinState.UNKNOWN, PinType.IN)); // B2
-        defaultPins.add(new Pin(14, PinState.UNKNOWN, PinType.IN)); // A2
+        defaultPins.add(new InputPin(2, PinState.UNKNOWN, PinType.IN)); // A1
+        defaultPins.add(new InputPin(3, PinState.UNKNOWN, PinType.IN)); // B1
+        defaultPins.add(new InputPin(5, PinState.UNKNOWN, PinType.IN)); // C0
+        defaultPins.add(new InputPin(13, PinState.UNKNOWN, PinType.IN)); // B2
+        defaultPins.add(new InputPin(14, PinState.UNKNOWN, PinType.IN)); // A2
 
-        defaultPins.add(new Pin(1, PinState.UNKNOWN, PinType.OUT)); // E1
-        defaultPins.add(new Pin(12, PinState.UNKNOWN, PinType.OUT)); // E2
-        defaultPins.add(new Pin(10, PinState.UNKNOWN, PinType.OUT)); // C2
+        defaultPins.add(new OutputPin(1, PinState.UNKNOWN, PinType.OUT)); // E1
+        defaultPins.add(new OutputPin(12, PinState.UNKNOWN, PinType.OUT)); // E2
+        defaultPins.add(new OutputPin(10, PinState.UNKNOWN, PinType.OUT)); // C2
         return defaultPins;
     }
 

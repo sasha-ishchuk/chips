@@ -2,6 +2,8 @@ package component.chip.demultiplexer;
 
 import component.ComponentType;
 import component.chip.ChipType;
+import component.pin.InputPin;
+import component.pin.OutputPin;
 import component.pin.Pin;
 import component.pin.PinType;
 import component.ChipComponent;
@@ -30,21 +32,21 @@ public class IC74138 extends ChipComponent {
     @Override
     public List<Pin> setDefaultPins() {
         List<Pin> defaultPins = new ArrayList<>();
-        defaultPins.add(new Pin(1, PinState.UNKNOWN, PinType.IN)); // A
-        defaultPins.add(new Pin(2, PinState.UNKNOWN, PinType.IN)); // B
-        defaultPins.add(new Pin(3, PinState.UNKNOWN, PinType.IN)); // C
-        defaultPins.add(new Pin(4, PinState.UNKNOWN, PinType.IN)); // ~G2A
-        defaultPins.add(new Pin(5, PinState.UNKNOWN, PinType.IN)); // ~G2B
-        defaultPins.add(new Pin(6, PinState.UNKNOWN, PinType.IN)); // G1
+        defaultPins.add(new InputPin(1, PinState.UNKNOWN, PinType.IN)); // A
+        defaultPins.add(new InputPin(2, PinState.UNKNOWN, PinType.IN)); // B
+        defaultPins.add(new InputPin(3, PinState.UNKNOWN, PinType.IN)); // C
+        defaultPins.add(new InputPin(4, PinState.UNKNOWN, PinType.IN)); // ~G2A
+        defaultPins.add(new InputPin(5, PinState.UNKNOWN, PinType.IN)); // ~G2B
+        defaultPins.add(new InputPin(6, PinState.UNKNOWN, PinType.IN)); // G1
 
-        defaultPins.add(new Pin(15, PinState.UNKNOWN, PinType.OUT)); // ~Y0
-        defaultPins.add(new Pin(14, PinState.UNKNOWN, PinType.OUT)); // ~Y1
-        defaultPins.add(new Pin(13, PinState.UNKNOWN, PinType.OUT)); // ~Y2
-        defaultPins.add(new Pin(12, PinState.UNKNOWN, PinType.OUT)); // ~Y3
-        defaultPins.add(new Pin(11, PinState.UNKNOWN, PinType.OUT)); // ~Y4
-        defaultPins.add(new Pin(10, PinState.UNKNOWN, PinType.OUT)); // ~Y5
-        defaultPins.add(new Pin(9, PinState.UNKNOWN, PinType.OUT)); // ~Y6
-        defaultPins.add(new Pin(7, PinState.UNKNOWN, PinType.OUT)); // ~Y7
+        defaultPins.add(new OutputPin(15, PinState.UNKNOWN, PinType.OUT)); // ~Y0
+        defaultPins.add(new OutputPin(14, PinState.UNKNOWN, PinType.OUT)); // ~Y1
+        defaultPins.add(new OutputPin(13, PinState.UNKNOWN, PinType.OUT)); // ~Y2
+        defaultPins.add(new OutputPin(12, PinState.UNKNOWN, PinType.OUT)); // ~Y3
+        defaultPins.add(new OutputPin(11, PinState.UNKNOWN, PinType.OUT)); // ~Y4
+        defaultPins.add(new OutputPin(10, PinState.UNKNOWN, PinType.OUT)); // ~Y5
+        defaultPins.add(new OutputPin(9, PinState.UNKNOWN, PinType.OUT)); // ~Y6
+        defaultPins.add(new OutputPin(7, PinState.UNKNOWN, PinType.OUT)); // ~Y7
         return defaultPins;
     }
 
