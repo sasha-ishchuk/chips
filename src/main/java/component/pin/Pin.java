@@ -44,6 +44,7 @@ public abstract class Pin implements Observer, Publisher {
     public abstract void addObserver(Observer observer);
     public abstract void removeObserver(Observer observer);
     public abstract void notifyObservers();
+    public abstract void applyNextStep();
 
     public boolean isOutputPin() {
         return getType().equals(PinType.OUT);

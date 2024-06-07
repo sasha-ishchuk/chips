@@ -28,4 +28,5 @@ public interface LogicComponent {
     boolean hasStateChanged();
 
     void resetStateChanged();
+    void step();
 }

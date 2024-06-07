@@ -68,6 +68,14 @@ public abstract class PinHeaderComponent implements LogicComponent {
         return getPins();
     }
 
+    public void step() {
+        for (Pin pin : getPins()) {
+            if (pin != null) {
+                pin.applyNextStep();
+            }
+        }
+    }
+
     public boolean hasStateChanged() {
         for (int i = 1; i <= getSize(); i++) {
             Pin pin = getPin(i);

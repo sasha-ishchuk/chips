@@ -11,6 +11,7 @@ import java.util.Set;
 public class OutputPin extends Pin implements Publisher {
     private int id;
     private PinState state;
+    private PinState stateStep;
     private PinType type;
 
     Set<Observer> observers = new HashSet<>();
@@ -48,6 +49,24 @@ public class OutputPin extends Pin implements Publisher {
 
     public void setState(PinState state) {
         this.state = state;
+        this.stateChanged = true;
+    }
+
+    public void setStateStep(PinState state) {
+        this.stateStep = state;
+        if (this.type.equals(PinType.IN)) {
+            applyNextStep();
+        }
+    }
+
+    public void applyNextStep() {
+        if (stateStep != null && stateStep != state) {
+            setState(stateStep);
+            notifyObservers();
+        } else {
+            this.stateChanged = false;
+        }
+        this.stateStep = null;
     }
 
     public PinType getType() {
@@ -100,7 +119,7 @@ public class OutputPin extends Pin implements Publisher {
 
     @Override
     public void update(PinState state) {
-        //
+        setStateStep(state);
     }
 
     @Override

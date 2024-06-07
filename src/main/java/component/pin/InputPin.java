@@ -4,12 +4,17 @@ import component.records.PinConnection;
 import edu.uj.po.simulation.interfaces.PinState;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class InputPin extends Pin implements Observer {
     private int id;
     private PinState state;
+    private PinState stateStep;
     private PinType type;
+
+    private Set<Observer> observers = new HashSet<>();
 
     private boolean connectedToInput = false;
     private boolean connectedToOutput = false;
@@ -44,6 +49,24 @@ public class InputPin extends Pin implements Observer {
 
     public void setState(PinState state) {
         this.state = state;
+        this.stateChanged = true;
+    }
+
+    public void setStateStep(PinState state) {
+        this.stateStep = state;
+        if (this.type.equals(PinType.IN)) {
+            applyNextStep();
+        }
+    }
+
+    public void applyNextStep() {
+        if (stateStep != null && stateStep != state) {
+            setState(stateStep);
+            notifyObservers();
+        } else {
+            this.stateChanged = false;
+        }
+        this.stateStep = null;
     }
 
     public PinType getType() {
@@ -95,24 +118,23 @@ public class InputPin extends Pin implements Observer {
     }
     @Override
     public void update(PinState state) {
-        if (!this.getState().equals(state)) {
-            this.stateChanged = true;
-        }
-        this.setState(state);
+        setStateStep(state);
     }
 
     @Override
     public void addObserver(Observer observer) {
-        return;
+        observers.add(observer);
     }
 
     @Override
     public void removeObserver(Observer observer) {
-        return;
+        observers.remove(observer);
     }
 
     @Override
     public void notifyObservers() {
-        return;
+        for (Observer observer : observers) {
+            observer.update(this.getState());
+        }
     }
 }

@@ -169,12 +169,8 @@ public class Simulation implements UserInterface {
 
         pinConnections.put(connectionId++, Map.of(new PinConnection(component1, pin1), new PinConnection(component2, pin2)));
 
-        if (p1.isOutputPin() && p2.isInputPin()) {
-            p1.addObserver(p2);
-        }
-        if (p2.isOutputPin() && p1.isInputPin()) {
-            p2.addObserver(p1);
-        }
+        p1.addObserver(p2);
+        p2.addObserver(p1);
     }
 
     @Override
@@ -209,22 +205,34 @@ public class Simulation implements UserInterface {
             int pinId = state.pinId();
             PinState pinState = state.state();
             LogicComponent component = components.get(componentId);
-            component.getPin(pinId).setState(pinState);
+            Pin pin = component.getPin(pinId);
+            pin.update(pinState);
+            pin.applyNextStep();
         }
 
-        // tick 0 for new inputs
-        int currComponentId = getInPinHeaderId();
-        LogicComponent inPinHeader = components.get(currComponentId);
-        inPinHeader.setConnectedPinsWithStates(getConnectionsFromChip(currComponentId));
-        inPinHeader.simulate();
-
-        // list of components connected to InPinHeader
-        Set<Integer> connectedComponents = inPinHeader.getConnectedComponentsIds();
+//        // tick 0 for new inputs
+//        int currComponentId = getInPinHeaderId();
+//        LogicComponent inPinHeader = components.get(currComponentId);
+//        inPinHeader.setConnectedPinsWithStates(getConnectionsFromChip(currComponentId));
+//        inPinHeader.simulate();
+//
+//        // list of components connected to InPinHeader
+//        Set<Integer> connectedComponents = inPinHeader.getConnectedComponentsIds();
         for (int i = 1; i <= ticks; i++) {
-            connectedComponents = simulateForComponents(connectedComponents);
+//            connectedComponents = simulateForComponents(connectedComponents);
+            simulation();
             result.put(i, getStatesForTick());
         }
         return result;
+    }
+
+    private void simulation() {
+        for (LogicComponent component : components.values()) {
+            component.simulate();
+        }
+        for (LogicComponent component : components.values()) {
+            component.step();
+        }
     }
 
     @Override
@@ -301,13 +309,14 @@ public class Simulation implements UserInterface {
             stateChange = false;
 
             for (LogicComponent component : components.values()) {
-                component.setConnectedPinsWithStates(getConnectionsFromChip(component.getId()));
+//                component.setConnectedPinsWithStates(getConnectionsFromChip(component.getId()));
                 component.simulate();
-                for (Pin pin : component.getPins()) {
-                    if (pin.isOutputPin()) {
-                        pin.notifyObservers();
-                    }
-                }
+                component.step();
+//                for (Pin pin : component.getPins()) {
+//                    if (pin.isOutputPin()) {
+//                        pin.notifyObservers();
+//                    }
+//                }
                 if (component.hasStateChanged()) {
                     stateChange = true;
                     updatedComponents.add(component);

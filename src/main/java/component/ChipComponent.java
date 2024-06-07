@@ -78,10 +78,19 @@ public abstract class ChipComponent implements LogicComponent {
         List<Pin> outPins = setOutPins();
         for (int i = 0; i < outputStates.size(); i++) {
             Pin pin = outPins.get(i);
-            pin.setState(outputStates.get(i));
-//            pin.notifyObservers();
+            // TODO check here
+            pin.update(outputStates.get(i));
+            pin.notifyObservers();
         }
         return outPins;
+    }
+
+    public void step() {
+        for (Pin pin : getPins()) {
+            if (pin != null) {
+                pin.applyNextStep();
+            }
+        }
     }
 
     private List<Pin> setInPins() {
