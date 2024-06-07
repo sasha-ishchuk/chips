@@ -4,12 +4,16 @@ import component.records.PinConnection;
 import edu.uj.po.simulation.interfaces.PinState;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
-public class OutputPin extends Pin {
+public class OutputPin extends Pin implements Publisher {
     private int id;
     private PinState state;
     private PinType type;
+
+    Set<Observer> observers = new HashSet<>();
 
     private boolean connectedToInput = false;
     private boolean connectedToOutput = false;
@@ -44,7 +48,6 @@ public class OutputPin extends Pin {
 
     public void setState(PinState state) {
         this.state = state;
-        this.stateChanged = true;
     }
 
     public PinType getType() {
@@ -93,5 +96,27 @@ public class OutputPin extends Pin {
 
     public void resetStateChanged() {
         this.stateChanged = false;
+    }
+
+    @Override
+    public void update(PinState state) {
+        //
+    }
+
+    @Override
+    public void addObserver(Observer observer) {
+        observers.add(observer);
+    }
+
+    @Override
+    public void removeObserver(Observer observer) {
+        observers.remove(observer);
+    }
+
+    @Override
+    public void notifyObservers() {
+        for (Observer observer : observers) {
+            observer.update(this.getState());
+        }
     }
 }

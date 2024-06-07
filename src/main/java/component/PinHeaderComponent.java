@@ -1,5 +1,6 @@
 package component;
 
+import component.pin.Observer;
 import component.pin.Pin;
 import component.pin.PinType;
 import component.records.ConnectedPinsWithStates;
@@ -49,54 +50,6 @@ public abstract class PinHeaderComponent implements LogicComponent {
         connectedComponentsIds.add(connectedComponentId);
     }
 
-    @Override
-    public void addObserver(Observer observer) {
-        observers.add(observer);
-    }
-
-    @Override
-    public void removeObserver(Observer observer) {
-        observers.remove(observer);
-    }
-
-    @Override
-    public void notifyObservers() {
-        for (Observer observer : observers) {
-            observer.updatePinStates(connectedPinsWithStates);
-        }
-    }
-
-//    @Override
-//    public void updatePinStates(List<ConnectedPinsWithStates> connectedPinsWithStates) {
-//        for (ConnectedPinsWithStates connectedPin : connectedPinsWithStates) {
-//            if (connectedPin.componentId2() == getId()) {
-//                getPin(connectedPin.pinId2()).setState(connectedPin.state2());
-//            }
-//        }
-//    }
-
-//    @Override
-//    public void updatePinStates(List<ConnectedPinsWithStates> connectedPinsWithStates) {
-//        for (ConnectedPinsWithStates connectedPin : connectedPinsWithStates) {
-//            if (connectedPin.componentId1() == getId()) {
-//                Pin pin = getPin(connectedPin.pinId1());
-//                if (pin != null && !(pin.getState().equals(connectedPin.state1()))) {
-//                    pin.setState(connectedPin.state1());
-//                } else if (pin != null) {
-//                    pin.setStateChanged(false);
-//                }
-//            }
-//            if (connectedPin.componentId2() == getId()) {
-//                Pin pin = getPin(connectedPin.pinId2());
-//                if (pin != null && !(pin.getState().equals(connectedPin.state2()))) {
-//                    pin.setState(connectedPin.state2());
-//                } else if (pin != null) {
-//                    pin.setStateChanged(false);
-//                }
-//            }
-//        }
-//    }
-
     private List<Pin> pinsToUpdateInNextCycle = new ArrayList<>();
 
     public List<Pin> getPinsToUpdateInNextCycle() {
@@ -108,70 +61,11 @@ public abstract class PinHeaderComponent implements LogicComponent {
     }
 
     @Override
-    public void updatePinStates(List<ConnectedPinsWithStates> connectedPinsWithStates) {
-        List<Pin> updateLater = new ArrayList<>();
-
-        if (!getPinsToUpdateInNextCycle().isEmpty()) {
-            for (Pin pin : getPinsToUpdateInNextCycle()) {
-                getPin(pin.getId()).setState(pin.getState());
-            }
-            setPinsToUpdateInNextCycle(new ArrayList<>());
-        }
-
-
-        for (ConnectedPinsWithStates connectedPin : connectedPinsWithStates) {
-            if (connectedPin.componentId1() == getId()) {
-                Pin pin = getPin(connectedPin.pinId1());
-                if (pin != null && !(pin.getState().equals(connectedPin.state1()))) {
-                    if (pin.getType() == PinType.OUT) {
-                        updateLater.add(pin);
-                    } else {
-                        pin.setState(connectedPin.state1());
-                    }
-                } else if (pin != null) {
-                    pin.setStateChanged(false);
-                }
-            }
-            if (connectedPin.componentId2() == getId()) {
-                Pin pin = getPin(connectedPin.pinId2());
-                if (pin != null && !(pin.getState().equals(connectedPin.state2()))) {
-                    if (pin.getType() == PinType.OUT) {
-                        updateLater.add(pin);
-                    } else {
-                        pin.setState(connectedPin.state2());
-                    }
-                } else if (pin != null) {
-                    pin.setStateChanged(false);
-                }
-            }
-        }
-        setPinsToUpdateInNextCycle(updateLater);
-    }
-
-    @Override
     public List<Pin> simulate() {
-        updateConnectedPinsWithStates();
-        notifyObservers();
-        return getPins();
-    }
-
-    private void updateConnectedPinsWithStates() {
-        List<ConnectedPinsWithStates> newConnectedPinsWithStates = new ArrayList<>();
-        for (ConnectedPinsWithStates connectedPin : getConnectedPinsWithStates()) {
-            if (connectedPin.componentId1() == getId()) {
-                PinState newState = getPin(connectedPin.pinId1()).getState();
-                newConnectedPinsWithStates.add(new ConnectedPinsWithStates(
-                        connectedPin.componentId1(), connectedPin.pinId1(), newState,
-                        connectedPin.componentId2(), connectedPin.pinId2(), newState));
-            } else if (connectedPin.componentId2() == getId()) {
-                PinState newState = getPin(connectedPin.pinId2()).getState();
-                newConnectedPinsWithStates.add(new ConnectedPinsWithStates(
-                        connectedPin.componentId1(), connectedPin.pinId1(), newState,
-                        connectedPin.componentId2(), connectedPin.pinId2(), newState));
-            }
+        for (Pin pin : getPins()) {
+            pin.notifyObservers();
         }
-        clearConnectedPinsWithStates();
-        setConnectedPinsWithStates(newConnectedPinsWithStates);
+        return getPins();
     }
 
     public boolean hasStateChanged() {

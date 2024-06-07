@@ -1,4 +1,6 @@
-package component;
+package component.pin;
+
+import component.pin.Observer;
 
 public interface Publisher {
     void addObserver(Observer observer);

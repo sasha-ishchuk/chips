@@ -169,8 +169,12 @@ public class Simulation implements UserInterface {
 
         pinConnections.put(connectionId++, Map.of(new PinConnection(component1, pin1), new PinConnection(component2, pin2)));
 
-        c1.addObserver(c2);
-        c2.addObserver(c1);
+        if (p1.isOutputPin() && p2.isInputPin()) {
+            p1.addObserver(p2);
+        }
+        if (p2.isOutputPin() && p1.isInputPin()) {
+            p2.addObserver(p1);
+        }
     }
 
     @Override
@@ -231,24 +235,18 @@ public class Simulation implements UserInterface {
     private Set<Integer> simulateForComponents(Set<Integer> connectedComponents) {
         Set<Integer> newConnectedComponents = new HashSet<>();
 
-//        for (LogicComponent component : components.values()) {
-//            component.setConnectedPinsWithStates(getConnectionsFromChip(component.getId()));
-//            component.simulate();
-//            newConnectedComponents.addAll(component.getConnectedComponentsIds());
-//        }
-//
-//        for (LogicComponent component : components.values()) {
-//            component.notifyObservers();
-//        }
-
         for (int componentId : connectedComponents) {
             LogicComponent component = components.get(componentId);
-            component.setConnectedPinsWithStates(getConnectionsFromChip(componentId));
             component.simulate();
             newConnectedComponents.addAll(component.getConnectedComponentsIds());
         }
         for (int componentId : connectedComponents) {
-            components.get(componentId).notifyObservers();
+            LogicComponent component = components.get(componentId);
+            for (Pin pin : component.getPins()) {
+                if (pin.isOutputPin()) {
+                    pin.notifyObservers();
+                }
+            }
         }
         return newConnectedComponents;
     }
@@ -305,7 +303,11 @@ public class Simulation implements UserInterface {
             for (LogicComponent component : components.values()) {
                 component.setConnectedPinsWithStates(getConnectionsFromChip(component.getId()));
                 component.simulate();
-                component.notifyObservers();
+                for (Pin pin : component.getPins()) {
+                    if (pin.isOutputPin()) {
+                        pin.notifyObservers();
+                    }
+                }
                 if (component.hasStateChanged()) {
                     stateChange = true;
                     updatedComponents.add(component);
@@ -316,5 +318,10 @@ public class Simulation implements UserInterface {
             }
             updatedComponents.clear();
         } while (stateChange);
+    }
+
+    private boolean checkUnknownStatesPresent() {
+        return components.get(getOutPinHeaderId()).getPins().stream()
+                .anyMatch(pin -> pin.getState().equals(PinState.UNKNOWN));
     }
 }

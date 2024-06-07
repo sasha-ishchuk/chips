@@ -6,7 +6,7 @@ import edu.uj.po.simulation.interfaces.PinState;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class Pin {
+public abstract class Pin implements Observer, Publisher {
 
     public abstract int getId();
 
@@ -38,4 +38,18 @@ public abstract class Pin {
     public abstract void setStateChanged(boolean stateChanged);
 
     public abstract void resetStateChanged();
+
+    public abstract void update(PinState state);
+
+    public abstract void addObserver(Observer observer);
+    public abstract void removeObserver(Observer observer);
+    public abstract void notifyObservers();
+
+    public boolean isOutputPin() {
+        return getType().equals(PinType.OUT);
+    }
+
+    public boolean isInputPin() {
+        return getType().equals(PinType.IN);
+    }
 }

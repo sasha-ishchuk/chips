@@ -6,7 +6,7 @@ import edu.uj.po.simulation.interfaces.PinState;
 import java.util.ArrayList;
 import java.util.List;
 
-public class InputPin extends Pin{
+public class InputPin extends Pin implements Observer {
     private int id;
     private PinState state;
     private PinType type;
@@ -44,7 +44,6 @@ public class InputPin extends Pin{
 
     public void setState(PinState state) {
         this.state = state;
-        this.stateChanged = true;
     }
 
     public PinType getType() {
@@ -93,5 +92,27 @@ public class InputPin extends Pin{
 
     public void resetStateChanged() {
         this.stateChanged = false;
+    }
+    @Override
+    public void update(PinState state) {
+        if (!this.getState().equals(state)) {
+            this.stateChanged = true;
+        }
+        this.setState(state);
+    }
+
+    @Override
+    public void addObserver(Observer observer) {
+        return;
+    }
+
+    @Override
+    public void removeObserver(Observer observer) {
+        return;
+    }
+
+    @Override
+    public void notifyObservers() {
+        return;
     }
 }

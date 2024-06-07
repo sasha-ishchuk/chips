@@ -6,7 +6,7 @@ import component.records.ConnectedPinsWithStates;
 import java.util.List;
 import java.util.Set;
 
-public interface LogicComponent extends Publisher, Observer {
+public interface LogicComponent {
 
     ComponentType getComponentType();
     void setComponentType(ComponentType componentType);
