@@ -169,6 +169,9 @@ public class Simulation implements UserInterface {
 
         pinConnections.put(connectionId++, Map.of(new PinConnection(component1, pin1), new PinConnection(component2, pin2)));
 
+        p1.setParentComponentType(c1.getComponentType());
+        p2.setParentComponentType(c2.getComponentType());
+
         p1.addObserver(p2);
         p2.addObserver(p1);
     }
@@ -181,9 +184,11 @@ public class Simulation implements UserInterface {
             int pinId = state.pinId();
             PinState pinState = state.state();
             LogicComponent component = components.get(componentId);
-            component.getPin(pinId).setState(pinState);
+            Pin pin = component.getPin(pinId);
+            pin.update(pinState);
+            pin.applyNextStep();
         }
-        components.get(getInPinHeaderId()).resetStateChanged();
+//        components.get(getInPinHeaderId()).resetStateChanged();
         simulateStationaryState();
 //        for (LogicComponent component : components.values()) {
 //            for (int i = 0; i < component.getPins().size(); i++) {
@@ -197,6 +202,14 @@ public class Simulation implements UserInterface {
 
     @Override
     public Map<Integer, Set<ComponentPinState>> simulation(Set<ComponentPinState> states0, int ticks) throws UnknownStateException {
+        int currComponentId = getInPinHeaderId();
+        LogicComponent inPinHeader = components.get(currComponentId);
+
+//        // check all pins in InputPinHeader is set by user
+//        if (states0.size() != inPinHeader.getPins().size()) {
+//            throw new UnknownStateException(new ComponentPinState(currComponentId, 1, PinState.UNKNOWN));
+//        }
+
         Map<Integer, Set<ComponentPinState>> result = new HashMap<>();
         result.put(0, getStatesForTick());
         // set new input states to Input Pins
@@ -210,17 +223,15 @@ public class Simulation implements UserInterface {
             pin.applyNextStep();
         }
 
-//        // tick 0 for new inputs
-//        int currComponentId = getInPinHeaderId();
-//        LogicComponent inPinHeader = components.get(currComponentId);
-//        inPinHeader.setConnectedPinsWithStates(getConnectionsFromChip(currComponentId));
-//        inPinHeader.simulate();
+        // tick 0 for new inputs
+        inPinHeader.setConnectedPinsWithStates(getConnectionsFromChip(currComponentId));
+        inPinHeader.simulate();
+        inPinHeader.step();
 //
 //        // list of components connected to InPinHeader
-//        Set<Integer> connectedComponents = inPinHeader.getConnectedComponentsIds();
+        Set<Integer> connectedComponents = inPinHeader.getConnectedComponentsIds();
         for (int i = 1; i <= ticks; i++) {
-//            connectedComponents = simulateForComponents(connectedComponents);
-            simulation();
+            connectedComponents = simulateForComponents(connectedComponents);
             result.put(i, getStatesForTick());
         }
         return result;
@@ -246,16 +257,21 @@ public class Simulation implements UserInterface {
         for (int componentId : connectedComponents) {
             LogicComponent component = components.get(componentId);
             component.simulate();
+//            component.step();
             newConnectedComponents.addAll(component.getConnectedComponentsIds());
         }
         for (int componentId : connectedComponents) {
             LogicComponent component = components.get(componentId);
-            for (Pin pin : component.getPins()) {
-                if (pin.isOutputPin()) {
-                    pin.notifyObservers();
-                }
-            }
+            component.step();
         }
+//        for (int componentId : connectedComponents) {
+//            LogicComponent component = components.get(componentId);
+//            for (Pin pin : component.getPins()) {
+//                if (pin.isOutputPin()) {
+//                    pin.notifyObservers();
+//                }
+//            }
+//        }
         return newConnectedComponents;
     }
 

@@ -1,5 +1,6 @@
 package component.pin;
 
+import component.ComponentType;
 import component.records.PinConnection;
 import edu.uj.po.simulation.interfaces.PinState;
 
@@ -7,6 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Pin implements Observer, Publisher {
+
+    private ComponentType parentComponentType;
 
     public abstract int getId();
 
@@ -52,5 +55,14 @@ public abstract class Pin implements Observer, Publisher {
 
     public boolean isInputPin() {
         return getType().equals(PinType.IN);
+    }
+    public abstract void setStateStep(PinState state);
+
+    public void setParentComponentType(ComponentType type) {
+        this.parentComponentType = type;
+    }
+
+    public ComponentType getParentComponentType() {
+        return parentComponentType;
     }
 }

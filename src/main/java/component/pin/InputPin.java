@@ -1,5 +1,6 @@
 package component.pin;
 
+import component.ComponentType;
 import component.records.PinConnection;
 import edu.uj.po.simulation.interfaces.PinState;
 
@@ -13,6 +14,8 @@ public class InputPin extends Pin implements Observer {
     private PinState state;
     private PinState stateStep;
     private PinType type;
+
+//    private ComponentType parentComponentType;
 
     private Set<Observer> observers = new HashSet<>();
 
@@ -131,10 +134,24 @@ public class InputPin extends Pin implements Observer {
         observers.remove(observer);
     }
 
+    public void setStateSimulation(PinState state) {
+        this.state = state;
+    }
+
     @Override
     public void notifyObservers() {
         for (Observer observer : observers) {
             observer.update(this.getState());
         }
     }
+
+//    @Override
+//    public void setParentComponentType(ComponentType type) {
+//        this.parentComponentType = type;
+//    }
+//
+//    @Override
+//    public ComponentType getParentComponentType() {
+//        return parentComponentType;
+//    }
 }

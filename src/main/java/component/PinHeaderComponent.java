@@ -60,12 +60,16 @@ public abstract class PinHeaderComponent implements LogicComponent {
         this.pinsToUpdateInNextCycle = pinsToUpdateInNextCycle;
     }
 
+//    @Override
+//    public List<Pin> simulate() {
+//        for (Pin pin : getPins()) {
+//            pin.notifyObservers();
+//        }
+//        return getPins();
+//    }
+
     @Override
-    public List<Pin> simulate() {
-        for (Pin pin : getPins()) {
-            pin.notifyObservers();
-        }
-        return getPins();
+    public void simulate() {
     }
 
     public void step() {

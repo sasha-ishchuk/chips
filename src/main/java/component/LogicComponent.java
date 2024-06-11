@@ -15,8 +15,9 @@ public interface LogicComponent {
     List<Pin> setDefaultPins();
     List<Pin> getPins();
     Pin getPin(int pinId);
-    List<Pin> simulate();
+//    List<Pin> simulate();
 
+    void simulate();
     List<ConnectedPinsWithStates> getConnectedPinsWithStates();
     void setConnectedPinsWithStates(List<ConnectedPinsWithStates> connectedPinsWithStates);
     void clearConnectedPinsWithStates();
