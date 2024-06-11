@@ -1,0 +1,29 @@
+s2.zip
+
+BŁĄD: simpleSimAndOpt01(String, String, int, String)[4]> Metoda optimize zwróciła null
+BŁĄD: simpleSimAndOpt01(String, String, int, String)[5]> Metoda optimize zwróciła null
+BŁĄD: simpleSimAndOpt01(String, String, int, String)[6]> Metoda optimize zwróciła null
+BŁĄD: simpleSimAndOpt02(String, String, int, String)[5]> Metoda optimize zwróciła null
+BŁĄD: simpleSimAndOpt02(String, String, int, String)[6]> Metoda optimize zwróciła null
+BŁĄD: simpleSimAndOpt02(String, String, int, String)[7]> Metoda optimize zwróciła null
+BŁĄD: simpleSimAndOpt02(String, String, int, String)[8]> Metoda optimize zwróciła null
+BŁĄD: simpleSimAndOpt03(String, String, int, String)[3]> Metoda optimize zwróciła null
+BŁĄD: simpleSimAndOpt03(String, String, int, String)[4]> Metoda optimize zwróciła null
+BŁĄD: simpleSimAndOpt04(String, String, int, String)[2]> Metoda optimize zwróciła null
+BŁĄD: simpleSimAndOpt04(String, String, int, String)[7]> Metoda optimize zwróciła null
+BŁĄD: simpleSimAndOpt04(String, String, int, String)[8]> Metoda optimize zwróciła null
+BŁĄD: simpleSimAndOpt04(String, String, int, String)[9]> Metoda optimize zwróciła null
+BŁĄD: simpleSimAndOpt05(String, String, int, String)[3]> Metoda optimize zwróciła null
+BŁĄD: simpleSimAndOpt05(String, String, int, String)[5]> Metoda optimize zwróciła null
+BŁĄD: simpleSimAndOpt05(String, String, int, String)[11]> Metoda optimize zwróciła null
+BŁĄD: simpleSimAndOpt05(String, String, int, String)[12]> Metoda optimize zwróciła null
+BŁĄD: simpleSimAndOpt05(String, String, int, String)[13]> Metoda optimize zwróciła null
+BŁĄD: simpleSimAndOpt05(String, String, int, String)[14]> Metoda optimize zwróciła null
+BŁĄD: simulation03(String, String, String)[1]> Metoda stationaryState wygenerowała niespodziewany wyjątek:  UnknownStateException
+-------------------------------------------
+Wykonano     : 242
+OK           : 222
+Błąd w       : 20
+Koszt błędów : 2000.0%
+Czas pracy   : 2748 msec
+-------------------------------------------

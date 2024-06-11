@@ -1,6 +1,5 @@
 package component.pin;
 
-import component.ComponentType;
 import component.records.PinConnection;
 import edu.uj.po.simulation.interfaces.PinState;
 
@@ -11,11 +10,9 @@ import java.util.Set;
 
 public class OutputPin extends Pin implements Publisher {
     private int id;
+    private PinType type;
     private PinState state;
     private PinState stateStep;
-    private PinType type;
-
-//    private ComponentType parentComponentType;
 
     Set<Observer> observers = new HashSet<>();
 
@@ -58,11 +55,11 @@ public class OutputPin extends Pin implements Publisher {
     public void setStateStep(PinState state) {
         this.stateStep = state;
         if (this.type.equals(PinType.IN)) {
-            applyNextStep();
+            performStep();
         }
     }
 
-    public void applyNextStep() {
+    public void performStep() {
         if (stateStep != null && stateStep != state) {
             setState(stateStep);
             notifyObservers();
@@ -141,14 +138,4 @@ public class OutputPin extends Pin implements Publisher {
             observer.update(this.getState());
         }
     }
-
-//    @Override
-//    public void setParentComponentType(ComponentType type) {
-//        this.parentComponentType = type;
-//    }
-//
-//    @Override
-//    public ComponentType getParentComponentType() {
-//        return parentComponentType;
-//    }
 }

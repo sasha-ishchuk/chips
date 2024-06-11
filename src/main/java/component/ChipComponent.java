@@ -1,6 +1,5 @@
 package component;
 
-import component.pin.Observer;
 import component.pin.Pin;
 import component.pin.PinType;
 import component.records.ConnectedPinsWithStates;
@@ -17,11 +16,7 @@ import java.util.Set;
 public abstract class ChipComponent implements LogicComponent {
 
     private int id;
-
-    private boolean stateChanged = false;
-
     private List<ConnectedPinsWithStates> connectedPinsWithStates = new ArrayList<>();
-
     private Set<Integer> connectedComponentsIds = new HashSet<>();
 
     public abstract LogicMatrix getLogicMatrix();
@@ -60,51 +55,12 @@ public abstract class ChipComponent implements LogicComponent {
         return id;
     }
 
-    private List<Pin> pinsToUpdateInNextCycle = new ArrayList<>();
-
-    public List<Pin> getPinsToUpdateInNextCycle() {
-        return pinsToUpdateInNextCycle;
-    }
-
-    public void setPinsToUpdateInNextCycle(List<Pin> pinsToUpdateInNextCycle) {
-        this.pinsToUpdateInNextCycle = pinsToUpdateInNextCycle;
-    }
-
-//    public List<Pin> simulate() {
-//        List<PinState> inputStates = setInPins().stream()
-//                .map(Pin::getState)
-//                .toList();
-//        List<PinState> outputStates = getLogicMatrix().getResult(inputStates);
-//        List<Pin> outPins = setOutPins();
-//        for (int i = 0; i < outputStates.size(); i++) {
-//            Pin pin = outPins.get(i);
-//            // TODO check here
-//            pin.update(outputStates.get(i));
-////            pin.notifyObservers();
-////            pin.setStateSimulation(outputStates.get(i));
-////            pin.notifyObservers();
-//        }
-//        return outPins;
-//    }
-
     public void step() {
         for (Pin pin : getPins()) {
             if (pin != null) {
-                pin.applyNextStep();
+                pin.performStep();
             }
         }
-    }
-
-    protected List<Pin> setInPins() {
-        return getPins().stream()
-                .filter(pin -> pin.getType().equals(PinType.IN))
-                .toList();
-    }
-
-    protected List<Pin> setOutPins() {
-        return getPins().stream()
-                .filter(pin -> pin.getType().equals(PinType.OUT))
-                .toList();
     }
 
     public List<PinState> getInPins() {
@@ -117,14 +73,7 @@ public abstract class ChipComponent implements LogicComponent {
         return ins;
     }
 
-    @Override
-    public void simulate() {
-        List<PinState> ins = getInPins();
-        List<PinState> outs = getLogicMatrix().map(ins);
-        setOutPinsForComponent(outs);
-    }
-
-    private void setOutPinsForComponent(List<PinState> outs) {
+    private void setOutPins(List<PinState> outs) {
         int index = 0;
         for (int i = 0; i < getPins().size(); i++) {
             if (getPins().get(i).getType() == PinType.OUT) {
@@ -132,6 +81,13 @@ public abstract class ChipComponent implements LogicComponent {
                 index += 1;
             }
         }
+    }
+
+    @Override
+    public void simulate() {
+        List<PinState> ins = getInPins();
+        List<PinState> outs = getLogicMatrix().map(ins);
+        setOutPins(outs);
     }
 
     public boolean hasStateChanged() {
@@ -142,10 +98,6 @@ public abstract class ChipComponent implements LogicComponent {
             }
         }
         return false;
-    }
-
-    public void setStateChanged(boolean stateChanged) {
-        this.stateChanged = stateChanged;
     }
 
     public void resetStateChanged() {

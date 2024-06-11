@@ -1,10 +1,7 @@
 package component;
 
-import component.pin.Observer;
 import component.pin.Pin;
-import component.pin.PinType;
 import component.records.ConnectedPinsWithStates;
-import edu.uj.po.simulation.interfaces.PinState;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -14,11 +11,8 @@ import java.util.Set;
 public abstract class PinHeaderComponent implements LogicComponent {
 
     List<ConnectedPinsWithStates> connectedPinsWithStates = new ArrayList<>();
-    Set<Observer> observers = new HashSet<>();
 
     Set<Integer> connectedComponentsIds = new HashSet<>();
-
-    private boolean stateChanged = false;
 
     public abstract void setSize(int size);
     public abstract void setId(int id);
@@ -50,32 +44,15 @@ public abstract class PinHeaderComponent implements LogicComponent {
         connectedComponentsIds.add(connectedComponentId);
     }
 
-    private List<Pin> pinsToUpdateInNextCycle = new ArrayList<>();
-
-    public List<Pin> getPinsToUpdateInNextCycle() {
-        return pinsToUpdateInNextCycle;
-    }
-
-    public void setPinsToUpdateInNextCycle(List<Pin> pinsToUpdateInNextCycle) {
-        this.pinsToUpdateInNextCycle = pinsToUpdateInNextCycle;
-    }
-
-//    @Override
-//    public List<Pin> simulate() {
-//        for (Pin pin : getPins()) {
-//            pin.notifyObservers();
-//        }
-//        return getPins();
-//    }
-
     @Override
     public void simulate() {
+        // do nothing
     }
 
     public void step() {
         for (Pin pin : getPins()) {
             if (pin != null) {
-                pin.applyNextStep();
+                pin.performStep();
             }
         }
     }
@@ -88,10 +65,6 @@ public abstract class PinHeaderComponent implements LogicComponent {
             }
         }
         return false;
-    }
-
-    public void setStateChanged(boolean stateChanged) {
-        this.stateChanged = stateChanged;
     }
 
     public void resetStateChanged() {

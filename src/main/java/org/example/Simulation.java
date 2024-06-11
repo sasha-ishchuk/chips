@@ -169,81 +169,54 @@ public class Simulation implements UserInterface {
 
         pinConnections.put(connectionId++, Map.of(new PinConnection(component1, pin1), new PinConnection(component2, pin2)));
 
-        p1.setParentComponentType(c1.getComponentType());
-        p2.setParentComponentType(c2.getComponentType());
-
         p1.addObserver(p2);
         p2.addObserver(p1);
     }
 
     @Override
     public void stationaryState(Set<ComponentPinState> states) throws UnknownStateException {
-        // Set new input states to Input Pins
-        for (ComponentPinState state : states) {
-            int componentId = state.componentId();
-            int pinId = state.pinId();
-            PinState pinState = state.state();
-            LogicComponent component = components.get(componentId);
-            Pin pin = component.getPin(pinId);
-            pin.update(pinState);
-            pin.applyNextStep();
-        }
-//        components.get(getInPinHeaderId()).resetStateChanged();
+        setInitialStates(states);
         simulateStationaryState();
-//        for (LogicComponent component : components.values()) {
-//            for (int i = 0; i < component.getPins().size(); i++) {
-//                if ((component.getPins().get(i).isConnectedToInput() || component.getPins().get(i).isConnectedToOutput()) &&
-//                        component.getPins().get(i).getState().equals(PinState.UNKNOWN)) {
-//                    throw new UnknownStateException(new ComponentPinState(component.getId(), component.getPins().get(i).getId(), PinState.UNKNOWN));
-//                }
-//            }
-//        }
+        for (LogicComponent component : components.values()) {
+            for (int i = 0; i < component.getPins().size(); i++) {
+                Pin currentPin = component.getPins().get(i);
+                if (currentPin != null && currentPin.isConnected()) {
+//                    List<PinConnection> connections = currentPin.getConnectionsToOtherPins();
+//                    for (PinConnection connection : connections) {
+//                        if (components.get(connection.componentId()).getPin(connection.pinId()).getState().equals(PinState.UNKNOWN)) {
+//                            throw new UnknownStateException(new ComponentPinState(connection.componentId(), connection.pinId(), PinState.UNKNOWN));
+//                        }
+//                    }
+                    if (currentPin.getState().equals(PinState.UNKNOWN)) {
+                        throw new UnknownStateException(new ComponentPinState(component.getId(), currentPin.getId(), PinState.UNKNOWN));
+                    }
+                }
+            }
+        }
     }
 
     @Override
     public Map<Integer, Set<ComponentPinState>> simulation(Set<ComponentPinState> states0, int ticks) throws UnknownStateException {
-        int currComponentId = getInPinHeaderId();
-        LogicComponent inPinHeader = components.get(currComponentId);
-
-//        // check all pins in InputPinHeader is set by user
-//        if (states0.size() != inPinHeader.getPins().size()) {
-//            throw new UnknownStateException(new ComponentPinState(currComponentId, 1, PinState.UNKNOWN));
-//        }
-
         Map<Integer, Set<ComponentPinState>> result = new HashMap<>();
         result.put(0, getStatesForTick());
-        // set new input states to Input Pins
-        for (ComponentPinState state : states0) {
-            int componentId = state.componentId();
-            int pinId = state.pinId();
-            PinState pinState = state.state();
-            LogicComponent component = components.get(componentId);
-            Pin pin = component.getPin(pinId);
-            pin.update(pinState);
-            pin.applyNextStep();
-        }
 
-        // tick 0 for new inputs
+        // set new states for InputPinHeader
+        setInitialStates(states0);
+
+        // set new inputs for components connected to InputPinHeader
+        int currComponentId = getInPinHeaderId();
+        LogicComponent inPinHeader = components.get(currComponentId);
         inPinHeader.setConnectedPinsWithStates(getConnectionsFromChip(currComponentId));
         inPinHeader.simulate();
         inPinHeader.step();
-//
-//        // list of components connected to InPinHeader
+
+        // list of components connected to InPinHeader
         Set<Integer> connectedComponents = inPinHeader.getConnectedComponentsIds();
         for (int i = 1; i <= ticks; i++) {
-            connectedComponents = simulateForComponents(connectedComponents);
+            connectedComponents = simulateForConnectedComponents(connectedComponents);
             result.put(i, getStatesForTick());
         }
         return result;
-    }
-
-    private void simulation() {
-        for (LogicComponent component : components.values()) {
-            component.simulate();
-        }
-        for (LogicComponent component : components.values()) {
-            component.step();
-        }
     }
 
     @Override
@@ -251,28 +224,75 @@ public class Simulation implements UserInterface {
         return null;
     }
 
-    private Set<Integer> simulateForComponents(Set<Integer> connectedComponents) {
-        Set<Integer> newConnectedComponents = new HashSet<>();
+    private void setInitialStates(Set<ComponentPinState> states) {
+        for (ComponentPinState state : states) {
+            int componentId = state.componentId();
+            int pinId = state.pinId();
+            PinState pinState = state.state();
+            LogicComponent component = components.get(componentId);
+            Pin pin = component.getPin(pinId);
+            pin.update(pinState);
+            pin.performStep();
+        }
+    }
 
+    private Set<Integer> simulateForConnectedComponents(Set<Integer> connectedComponents) {
+        Set<Integer> newConnectedComponents = new HashSet<>();
         for (int componentId : connectedComponents) {
             LogicComponent component = components.get(componentId);
             component.simulate();
-//            component.step();
             newConnectedComponents.addAll(component.getConnectedComponentsIds());
         }
         for (int componentId : connectedComponents) {
             LogicComponent component = components.get(componentId);
             component.step();
         }
-//        for (int componentId : connectedComponents) {
-//            LogicComponent component = components.get(componentId);
-//            for (Pin pin : component.getPins()) {
-//                if (pin.isOutputPin()) {
-//                    pin.notifyObservers();
-//                }
-//            }
-//        }
         return newConnectedComponents;
+    }
+
+    private List<ConnectedPinsWithStates> getConnectionsFromChip(int chipId) {
+        List<ConnectedPinsWithStates> connections = new ArrayList<>();
+        for (ConnectedPinsWithStates connection : connectedPinsWithStates) {
+            if (connection.componentId1() == chipId) {
+                connections.add(connection);
+            } else if (connection.componentId2() == chipId) {
+                connections.add(connection);
+            }
+        }
+        return connections;
+    }
+
+    private void simulateStationaryState() {
+        Set<LogicComponent> updatedComponents = new HashSet<>();
+        boolean stateChange = true;
+        while (stateChange) {
+            stateChange = false;
+            for (LogicComponent component : components.values()) {
+                component.simulate();
+                component.step();
+                if (component.hasStateChanged()) {
+                    stateChange = true;
+                    updatedComponents.add(component);
+                }
+            }
+            for (LogicComponent component : updatedComponents) {
+                component.resetStateChanged();
+            }
+            updatedComponents.clear();
+        }
+    }
+
+    private Set<ComponentPinState> getStatesForTick() {
+        Set<ComponentPinState> states = new HashSet<>();
+        LogicComponent outPinHeader = components.get(getOutPinHeaderId());
+        for (Pin pin : outPinHeader.getPins()) {
+            states.add(new ComponentPinState(outPinHeader.getId(), pin.getId(), pin.getState()));
+        }
+        return states;
+    }
+
+    public LogicComponent getComponentById(int id) {
+        return components.get(id);
     }
 
     private int getInPinHeaderId() {
@@ -291,62 +311,5 @@ public class Simulation implements UserInterface {
             }
         }
         return -1;
-    }
-
-    private Set<ComponentPinState> getStatesForTick() {
-        Set<ComponentPinState> states = new HashSet<>();
-        LogicComponent outPinHeader = components.get(getOutPinHeaderId());
-        for (Pin pin : outPinHeader.getPins()) {
-            states.add(new ComponentPinState(outPinHeader.getId(), pin.getId(), pin.getState()));
-        }
-        return states;
-    }
-
-    private List<ConnectedPinsWithStates> getConnectionsFromChip(int chipId) {
-        List<ConnectedPinsWithStates> connections = new ArrayList<>();
-        for (ConnectedPinsWithStates connection : connectedPinsWithStates) {
-            if (connection.componentId1() == chipId) {
-                connections.add(connection);
-            } else if (connection.componentId2() == chipId) {
-                connections.add(connection);
-            }
-        }
-        return connections;
-    }
-
-    public LogicComponent getComponentById(int id) {
-        return components.get(id);
-    }
-
-    private void simulateStationaryState() {
-        boolean stateChange;
-        Set<LogicComponent> updatedComponents = new HashSet<>();
-        do {
-            stateChange = false;
-
-            for (LogicComponent component : components.values()) {
-//                component.setConnectedPinsWithStates(getConnectionsFromChip(component.getId()));
-                component.simulate();
-                component.step();
-//                for (Pin pin : component.getPins()) {
-//                    if (pin.isOutputPin()) {
-//                        pin.notifyObservers();
-//                    }
-//                }
-                if (component.hasStateChanged()) {
-                    stateChange = true;
-                    updatedComponents.add(component);
-                }
-            }
-            for (LogicComponent component : updatedComponents) {
-                component.resetStateChanged();
-            }
-            updatedComponents.clear();
-        } while (stateChange);
-    }
-
-    private boolean checkUnknownStatesPresent() {
-        return components.get(getOutPinHeaderId()).getPins().stream()
-                .anyMatch(pin -> pin.getState().equals(PinState.UNKNOWN));
     }
 }
