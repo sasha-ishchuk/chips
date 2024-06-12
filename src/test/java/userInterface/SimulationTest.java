@@ -1,4 +1,4 @@
-package simulation;
+package userInterface;
 
 import edu.uj.po.simulation.interfaces.ComponentPinState;
 import org.example.Simulation;
@@ -296,5 +296,100 @@ public class SimulationTest {
             1   	LO	    LO	    LO
             2   	LO	    LO	    HI
         */
+
+
     }
+
+    @Test
+    public void testOptimization_forThreeAnd_oramusExampleForDeleteComponent() throws UnknownChip, UnknownPin, ShortCircuitException, UnknownComponent, UnknownStateException {
+        // create components
+        int inPinHeaderId = userInterface.createInputPinHeader(7);
+        int and7408_1 = userInterface.createChip(7408);
+        int and7408_2 = userInterface.createChip(7408);
+        int and7408_3 = userInterface.createChip(7408);
+        int outPinHeaderId = userInterface.createOutputPinHeader(2);
+
+        userInterface.connect(inPinHeaderId, 1, and7408_1, 1); // 0
+        userInterface.connect(inPinHeaderId, 2, and7408_1, 2); // 1
+        userInterface.connect(inPinHeaderId, 3, and7408_2, 1); // 1
+        userInterface.connect(inPinHeaderId, 4, and7408_2, 2); // 0
+        userInterface.connect(inPinHeaderId, 5, and7408_2, 4); // 0
+        userInterface.connect(inPinHeaderId, 6, and7408_2, 5); // 1
+        userInterface.connect(inPinHeaderId, 7, and7408_3, 5); // 1
+
+        userInterface.connect(and7408_1, 3, and7408_3, 13); // 0
+        userInterface.connect(and7408_2, 3, and7408_3, 12); // 1
+        userInterface.connect(and7408_2, 6, and7408_3, 4); // 1
+
+        userInterface.connect(and7408_3, 6, outPinHeaderId, 1);
+        userInterface.connect(and7408_3, 11, outPinHeaderId, 2);
+
+        Set<ComponentPinState> componentPinStates = Set.of(
+                new ComponentPinState(inPinHeaderId, 1, PinState.LOW), // we1
+                new ComponentPinState(inPinHeaderId, 2, PinState.HIGH), // we2
+                new ComponentPinState(inPinHeaderId, 3, PinState.HIGH), // we3
+                new ComponentPinState(inPinHeaderId, 4, PinState.LOW),  // we4
+                new ComponentPinState(inPinHeaderId, 5, PinState.LOW), // we5
+                new ComponentPinState(inPinHeaderId, 6, PinState.HIGH), // we6
+                new ComponentPinState(inPinHeaderId, 7, PinState.HIGH) // we7
+        );
+
+        userInterface.stationaryState(componentPinStates);
+
+        LogicComponent outPinHeader = userInterface.getComponentById(outPinHeaderId);
+        Assertions.assertEquals(PinState.LOW, outPinHeader.getPin(1).getState());
+        Assertions.assertEquals(PinState.LOW, outPinHeader.getPin(2).getState());
+
+        /*
+          Stationary state
+            We1 	LO
+            We2 	HI
+            We3 	HI
+            We4 	LO
+            We5 	LO
+            We6   	HI
+            We7   	HI
+
+            1   	LO
+            2   	LO
+
+            We8     LO - U3 12
+            We9     LO - U3 13
+            We10    LO - U3 4
+        */
+
+        Set<ComponentPinState> componentPinStatesInitial = Set.of(
+                new ComponentPinState(inPinHeaderId, 1, PinState.LOW), // we1
+                new ComponentPinState(inPinHeaderId, 2, PinState.HIGH), // we2
+                new ComponentPinState(inPinHeaderId, 3, PinState.LOW), // we3
+                new ComponentPinState(inPinHeaderId, 4, PinState.LOW),  // we4
+                new ComponentPinState(inPinHeaderId, 5, PinState.HIGH), // we5
+                new ComponentPinState(inPinHeaderId, 6, PinState.HIGH), // we6
+                new ComponentPinState(inPinHeaderId, 7, PinState.HIGH) // we7
+        );
+
+        // simulate
+        Map<Integer, Set<ComponentPinState>> result = userInterface.simulation(componentPinStatesInitial, 2);
+
+        // stationary state
+        userInterface.stationaryState(componentPinStates);
+
+        // optimize
+        Set<Integer> resultOpt = userInterface.optimize(componentPinStatesInitial, 2);
+        assertEquals(1, resultOpt.size());
+        assertEquals(1, resultOpt.iterator().next());
+
+
+        /*
+                    Tick0	Tick1   Tick2
+            1   	LO	    LO	    LO
+            2   	LO	    LO	    HI
+        */
+
+//        StationaryStateCircuit stationaryStateCircuit = userInterface.getStationaryStateCircuit();
+//        stationaryStateCircuit.loadStationaryStateCircuit();
+
+    }
+
+
 }

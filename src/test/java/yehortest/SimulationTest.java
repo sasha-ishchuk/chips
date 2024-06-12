@@ -1,7 +1,6 @@
 package yehortest;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import component.LogicComponent;
 import edu.uj.po.simulation.interfaces.ComponentPinState;
@@ -17,14 +16,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import static junit.framework.Assert.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class SimulationTest {
     private Simulation userInterface;
     private int pinHeaderInputId;
     private int pinHeaderOutputId;
 
-    @BeforeEach
+//    @BeforeEach
     public void setUp() throws Exception {
         userInterface = new Simulation();
 
@@ -165,5 +166,95 @@ public class SimulationTest {
                 assertEquals(expectedStates.get(tick).get(state.pinId() - 1), state.state());
             }
         }
+    }
+
+
+    @Test
+    public void testOptimization1() throws Exception {
+        userInterface = new Simulation();
+        int pinHeaderInputId = userInterface.createInputPinHeader(7);
+        int pinHeaderOutputId = userInterface.createOutputPinHeader(2);
+
+        int chip7408IdU1 = userInterface.createChip(7408);
+        int chip7408IdU3 = userInterface.createChip(7408);
+        int chip7408IdU2 = userInterface.createChip(7408);
+
+
+        userInterface.connect(pinHeaderInputId, 1, chip7408IdU1, 1);
+        userInterface.connect(pinHeaderInputId, 2, chip7408IdU1, 2);
+
+        userInterface.connect(pinHeaderInputId, 3, chip7408IdU2, 1);
+        userInterface.connect(pinHeaderInputId, 4, chip7408IdU2, 2);
+
+        userInterface.connect(pinHeaderInputId, 5, chip7408IdU2, 4);
+        userInterface.connect(pinHeaderInputId, 6, chip7408IdU2, 5);
+
+        userInterface.connect(pinHeaderInputId, 7, chip7408IdU3, 5);
+
+        userInterface.connect(chip7408IdU1, 3, chip7408IdU3, 13);
+        userInterface.connect(chip7408IdU2, 3, chip7408IdU3, 12);
+        userInterface.connect(chip7408IdU2, 6, chip7408IdU3, 4);
+
+
+        userInterface.connect(pinHeaderOutputId, 1, chip7408IdU3, 11);
+        userInterface.connect(pinHeaderOutputId, 2, chip7408IdU3, 6);
+
+
+        // Define the initial stationary state
+        Set<ComponentPinState> stationaryStates = new HashSet<>();
+        stationaryStates.add(new ComponentPinState(pinHeaderInputId, 1, PinState.LOW));
+        stationaryStates.add(new ComponentPinState(pinHeaderInputId, 2, PinState.HIGH));
+        stationaryStates.add(new ComponentPinState(pinHeaderInputId, 3, PinState.HIGH));
+        stationaryStates.add(new ComponentPinState(pinHeaderInputId, 4, PinState.LOW));
+        stationaryStates.add(new ComponentPinState(pinHeaderInputId, 5, PinState.LOW));
+        stationaryStates.add(new ComponentPinState(pinHeaderInputId, 6, PinState.HIGH));
+        stationaryStates.add(new ComponentPinState(pinHeaderInputId, 7, PinState.HIGH));
+
+        // 0, 1, 1, 0, 0, 1, 1
+        userInterface.stationaryState(stationaryStates);
+//
+//        L component = userInterface.getCircuit().getComponentById(pinHeaderOutputId);
+//        assertEquals(PinState.LOW, component.getPin(1).getState());
+//        assertEquals(PinState.LOW, component.getPin(2).getState());
+
+
+        // Define the initial state for the simulation
+        Set<ComponentPinState> initialStates = new HashSet<>();
+        initialStates.add(new ComponentPinState(pinHeaderInputId, 1, PinState.LOW));
+        initialStates.add(new ComponentPinState(pinHeaderInputId, 2, PinState.HIGH));
+        initialStates.add(new ComponentPinState(pinHeaderInputId, 3, PinState.LOW));
+        initialStates.add(new ComponentPinState(pinHeaderInputId, 4, PinState.LOW));
+        initialStates.add(new ComponentPinState(pinHeaderInputId, 5, PinState.HIGH));
+        initialStates.add(new ComponentPinState(pinHeaderInputId, 6, PinState.HIGH));
+        initialStates.add(new ComponentPinState(pinHeaderInputId, 7, PinState.HIGH));
+
+
+        Map<Integer, Set<ComponentPinState>> simulationResults = userInterface.simulation(initialStates, 3);
+
+        // Define expected states at each tick
+        List<List<PinState>> expectedStates = List.of(
+                List.of(PinState.LOW, PinState.LOW),
+                List.of(PinState.LOW, PinState.LOW),
+                List.of(PinState.LOW, PinState.HIGH),
+                List.of(PinState.LOW, PinState.HIGH)
+        );
+
+        // Validate the results at each tick
+
+        for (int tick = 0; tick <= 3; tick++) {
+            Set<ComponentPinState> statesAtTick = simulationResults.get(tick);
+            for (ComponentPinState state : statesAtTick) {
+                assertEquals(expectedStates.get(tick).get(state.pinId() - 1), state.state());
+            }
+        }
+
+        userInterface.stationaryState(stationaryStates);
+
+// Test the optimize method
+        Set<Integer> removableComponents = userInterface.optimize(initialStates, 2);
+        assertTrue(removableComponents.contains(chip7408IdU1)); // U01 should be removable
+        assertFalse(removableComponents.contains(chip7408IdU2)); // U02 should not be removable
+        assertFalse(removableComponents.contains(chip7408IdU3)); // U03 should not be removable
+
     }
 }

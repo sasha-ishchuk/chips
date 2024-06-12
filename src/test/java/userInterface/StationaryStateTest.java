@@ -1,4 +1,4 @@
-package simulation;
+package userInterface;
 
 import org.example.Simulation;
 import org.junit.jupiter.api.Assertions;

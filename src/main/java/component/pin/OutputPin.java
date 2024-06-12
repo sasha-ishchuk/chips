@@ -138,4 +138,9 @@ public class OutputPin extends Pin implements Publisher {
             observer.update(this.getState());
         }
     }
+
+    @Override
+    public Set<Observer> getObservers() {
+        return this.observers;
+    }
 }

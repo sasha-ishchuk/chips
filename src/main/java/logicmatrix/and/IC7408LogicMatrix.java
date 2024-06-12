@@ -19,9 +19,10 @@ public class IC7408LogicMatrix extends LogicMatrix {
     private PinState simulateAnd2(PinState a, PinState b) {
         if (a == PinState.HIGH && b == PinState.HIGH) {
             return PinState.HIGH;
-        } else if (isAnyPinStateUnknown(List.of(a, b))) {
-            return PinState.UNKNOWN;
         }
+//        else if (isAnyPinStateUnknown(List.of(a, b))) {
+//            return PinState.UNKNOWN;
+//        }
         return PinState.LOW;
     }
 }

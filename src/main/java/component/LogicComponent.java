@@ -1,5 +1,6 @@
 package component;
 
+import component.chip.ChipType;
 import component.pin.Pin;
 import component.records.ConnectedPinsWithStates;
 
@@ -29,4 +30,6 @@ public interface LogicComponent {
 
     void resetStateChanged();
     void step();
+
+    void removeConnectedComponentId(int id);
 }

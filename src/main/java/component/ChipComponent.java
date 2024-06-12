@@ -16,6 +16,7 @@ import java.util.Set;
 public abstract class ChipComponent implements LogicComponent {
 
     private int id;
+    private int code;
     private List<ConnectedPinsWithStates> connectedPinsWithStates = new ArrayList<>();
     private Set<Integer> connectedComponentsIds = new HashSet<>();
 
@@ -41,6 +42,10 @@ public abstract class ChipComponent implements LogicComponent {
 
     public void setConnectedComponentsIds(Set<Integer> connectedComponentsIds) {
         this.connectedComponentsIds = connectedComponentsIds;
+    }
+
+    public void removeConnectedComponentId(int id) {
+        connectedComponentsIds.remove(id);
     }
 
     public void addConnectedComponentId(int connectedComponentId) {
@@ -107,5 +112,13 @@ public abstract class ChipComponent implements LogicComponent {
                 pin.resetStateChanged();
             }
         }
+    }
+
+    public int getCode() {
+        return code;
+    }
+
+    public void setCode(int code) {
+        this.code = code;
     }
 }

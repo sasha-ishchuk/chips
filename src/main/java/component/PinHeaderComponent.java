@@ -44,6 +44,10 @@ public abstract class PinHeaderComponent implements LogicComponent {
         connectedComponentsIds.add(connectedComponentId);
     }
 
+    public void removeConnectedComponentId(int id) {
+        connectedComponentsIds.remove(id);
+    }
+
     @Override
     public void simulate() {
         // do nothing

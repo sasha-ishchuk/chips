@@ -50,5 +50,4 @@ public class PinHeaderTest {
         Assertions.assertEquals(PinState.LOW, outPinHeader.getPin(2).getState());
         Assertions.assertEquals(PinState.HIGH, outPinHeader.getPin(3).getState());
     }
-
 }

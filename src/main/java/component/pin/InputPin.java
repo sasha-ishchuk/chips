@@ -137,4 +137,9 @@ public class InputPin extends Pin implements Observer {
             observer.update(this.getState());
         }
     }
+
+    @Override
+    public Set<Observer> getObservers() {
+        return  this.observers;
+    }
 }
