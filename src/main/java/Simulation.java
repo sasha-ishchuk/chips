@@ -174,7 +174,7 @@ public class Simulation implements UserInterface {
         if (!states.isEmpty()){
             setInitialStates(states);
         }
-        simulateStationaryState();
+        simulateStationaryState(true);
         for (LogicComponent component : components.values()) {
             for (int i = 0; i < component.getPins().size(); i++) {
                 Pin currentPin = component.getPins().get(i);
@@ -278,15 +278,11 @@ public class Simulation implements UserInterface {
                     if (connectedComponent != null) {
                         Pin connectedPin = connectedComponent.getPin(connection.pinId());
                         if (connectedPin != null) {
-                            // remove target pin from list of observers
+                            // remove target pin from other pins' list of observers
                             connectedPin.removeObserver(pinToRemove);
                             connectedPin.setState(PinState.UNKNOWN);
                         }
                     }
-                }
-                for (Observer observer : pinToRemove.getObservers()) {
-                    // remove target pin's observers
-                    ((Pin) observer).removeObserver(pinToRemove);
                 }
             }
         }
@@ -298,7 +294,9 @@ public class Simulation implements UserInterface {
                                                                               Set<ComponentPinState> states0){
         Map<Integer, Set<ComponentPinState>> result = new HashMap<>();
         result.put(0, getStatesForTick());
-        setInitialStates(states0);
+        if (!states0.isEmpty()){
+            setInitialStates(states0);
+        }
         for (int i = 1; i <= ticks; i++) {
             for (Map.Entry<Integer, LogicComponent> entry : components.entrySet()) {
                 if (!removedChips.contains(entry.getKey())) {
@@ -345,6 +343,27 @@ public class Simulation implements UserInterface {
         return newConnectedComponents;
     }
 
+    private void simulateStationaryState(boolean stateChange) {
+        if (!stateChange) {
+            return;
+        }
+        Set<LogicComponent> updatedComponents = new HashSet<>();
+        stateChange = false;
+        for (LogicComponent component : components.values()) {
+            component.simulate();
+            component.step();
+            if (component.hasStateChanged()) {
+                stateChange = true;
+                updatedComponents.add(component);
+            }
+        }
+        for (LogicComponent component : updatedComponents) {
+            component.resetStateChanged();
+        }
+        updatedComponents.clear();
+        simulateStationaryState(stateChange);
+    }
+
     private List<ConnectedPinsWithStates> getConnectionsFromChip(int chipId) {
         List<ConnectedPinsWithStates> connections = new ArrayList<>();
         for (ConnectedPinsWithStates connection : connectedPinsWithStates) {
@@ -355,26 +374,6 @@ public class Simulation implements UserInterface {
             }
         }
         return connections;
-    }
-
-    private void simulateStationaryState() {
-        Set<LogicComponent> updatedComponents = new HashSet<>();
-        boolean stateChange = true;
-        while (stateChange) {
-            stateChange = false;
-            for (LogicComponent component : components.values()) {
-                component.simulate();
-                component.step();
-                if (component.hasStateChanged()) {
-                    stateChange = true;
-                    updatedComponents.add(component);
-                }
-            }
-            for (LogicComponent component : updatedComponents) {
-                component.resetStateChanged();
-            }
-            updatedComponents.clear();
-        }
     }
 
     private Set<ComponentPinState> getStatesForTick() {

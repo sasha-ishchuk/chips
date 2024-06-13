@@ -14,7 +14,6 @@ import java.util.Set;
 public abstract class ChipComponent implements LogicComponent {
 
     private int id;
-    private int code;
     private List<ConnectedPinsWithStates> connectedPinsWithStates = new ArrayList<>();
     private Set<Integer> connectedComponentsIds = new HashSet<>();
 
