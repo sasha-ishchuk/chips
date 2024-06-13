@@ -25,11 +25,4 @@ public class IC7404LogicMatrix extends LogicMatrix {
                 simulateNot(input.get(5))
         );
     }
-
-    private PinState simulateNot(PinState a) {
-        if (a == PinState.UNKNOWN) {
-            return PinState.UNKNOWN;
-        }
-        return a == PinState.HIGH ? PinState.LOW : PinState.HIGH;
-    }
 }

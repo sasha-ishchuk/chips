@@ -23,14 +23,4 @@ public class IC7400LogicMatrix extends LogicMatrix {
                 simulateNand2(input.get(6), input.get(7))
         );
     }
-
-    private PinState simulateNand2(PinState a, PinState b) {
-        if (a == PinState.HIGH && b == PinState.HIGH) {
-            return PinState.LOW;
-        }
-        else if (a == PinState.LOW || b == PinState.LOW) {
-            return PinState.HIGH;
-        }
-        return PinState.UNKNOWN;
-    }
 }

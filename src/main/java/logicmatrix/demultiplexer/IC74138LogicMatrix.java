@@ -66,15 +66,6 @@ public class IC74138LogicMatrix extends LogicMatrix {
     }
 
     private PinState getNotG2Input(PinState notG2A, PinState notG2B) {
-        return simulateAnd(notG2A, notG2B);
-    }
-
-    private PinState simulateAnd(PinState a, PinState b) {
-        if (a == PinState.HIGH && b == PinState.HIGH) {
-            return PinState.HIGH;
-        } if (isAnyPinStateUnknown(List.of(a, b))) {
-            return PinState.UNKNOWN;
-        }
-        return PinState.LOW;
+        return simulateAnd2(notG2A, notG2B);
     }
 }

@@ -53,11 +53,4 @@ public class IC74152LogicMatrix extends LogicMatrix {
 
         return output;
     }
-
-    private PinState simulateNot(PinState a) {
-        if (a == PinState.UNKNOWN) {
-            return PinState.UNKNOWN;
-        }
-        return a == PinState.HIGH ? PinState.LOW : PinState.HIGH;
-    }
 }

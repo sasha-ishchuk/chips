@@ -4,6 +4,8 @@ import edu.uj.po.simulation.interfaces.PinState;
 import logicmatrix.LogicMatrix;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 public class IC7442LogicMatrix extends LogicMatrix {
@@ -22,8 +24,7 @@ public class IC7442LogicMatrix extends LogicMatrix {
     }
 
     private List<PinState> simulateBcdDecoder(PinState a, PinState b, PinState c, PinState d) {
-        List<PinState> output = new ArrayList<>(List.of(PinState.HIGH, PinState.HIGH, PinState.HIGH, PinState.HIGH,
-                PinState.HIGH, PinState.HIGH, PinState.HIGH, PinState.HIGH, PinState.HIGH, PinState.HIGH));
+        List<PinState> output = new ArrayList<>(Collections.nCopies(10, PinState.HIGH));
 
         int decimal = 0;
 

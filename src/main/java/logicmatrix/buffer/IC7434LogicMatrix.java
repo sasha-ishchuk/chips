@@ -25,8 +25,4 @@ public class IC7434LogicMatrix extends LogicMatrix {
                 simulateIdentity(input.get(5))
         );
     }
-
-    private PinState simulateIdentity(PinState a) {
-        return a;
-    }
 }
