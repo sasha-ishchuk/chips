@@ -8,6 +8,13 @@ import java.util.List;
 public class IC7410LogicMatrix extends LogicMatrix {
 
     @Override
+    public void checkInputsValid(List<PinState> input) {
+        if (input.size() != 9) {
+            throw new IllegalArgumentException("IC7410LogicMatrix requires 9 input pins");
+        }
+    }
+
+    @Override
     public List<PinState> map(List<PinState> input) {
         return List.of(
                 simulateNand3(input.get(0), input.get(1), input.get(2)),

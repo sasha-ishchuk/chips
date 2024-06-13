@@ -9,6 +9,13 @@ import java.util.List;
 public class IC74152LogicMatrix extends LogicMatrix {
 
     @Override
+    public void checkInputsValid(List<PinState> input) {
+        if (input.size() != 11) {
+            throw new IllegalArgumentException("IC74152LogicMatrix requires 11 input pins");
+        }
+    }
+
+    @Override
     public List<PinState> map(List<PinState> input) {
         List<PinState> output = new ArrayList<>();
 

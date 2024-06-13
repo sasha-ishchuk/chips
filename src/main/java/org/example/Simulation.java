@@ -1,3 +1,5 @@
+package org.example;
+
 import component.ChipComponent;
 import component.SavedLogicComponent;
 import component.ComponentType;
@@ -19,7 +21,6 @@ import component.chip.nand.IC7420Creator;
 import component.chip.nor.IC7402Creator;
 import component.chip.not.IC7404Creator;
 import component.chip.or.IC7432Creator;
-import component.pin.Observer;
 import component.pin.Pin;
 import component.pin.PinType;
 import component.pinheader.PinHeaderCreator;
@@ -271,7 +272,7 @@ public class Simulation implements UserInterface {
     private LogicComponent deleteChip(int chipId) {
         LogicComponent component = components.remove(chipId);
         for (Pin pinToRemove : component.getPins()) {
-            if (pinToRemove != null && pinToRemove.getType().equals(PinType.OUT)) {
+            if (pinToRemove != null && pinToRemove.isOutputPin()) {
                 List<PinConnection> connections = pinToRemove.getConnectionsToOtherPins();
                 for (PinConnection connection : connections) {
                     LogicComponent connectedComponent = components.get(connection.componentId());

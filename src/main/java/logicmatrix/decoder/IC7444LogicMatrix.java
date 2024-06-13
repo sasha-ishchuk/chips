@@ -8,6 +8,14 @@ import java.util.Collections;
 import java.util.List;
 
 public class IC7444LogicMatrix extends LogicMatrix {
+
+    @Override
+    public void checkInputsValid(List<PinState> input) {
+        if (input.size() != 4) {
+            throw new IllegalArgumentException("IC7444LogicMatrix requires 4 input pins");
+        }
+    }
+
     @Override
     public List<PinState> map(List<PinState> input) {
         // 0-D, 1-C, 2-B, 3-A
