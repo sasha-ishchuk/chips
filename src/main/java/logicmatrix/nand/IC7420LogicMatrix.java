@@ -18,8 +18,9 @@ public class IC7420LogicMatrix extends LogicMatrix {
     private PinState nand4(PinState a, PinState b, PinState c, PinState d) {
         if (a == PinState.HIGH && b == PinState.HIGH && c == PinState.HIGH && d == PinState.HIGH) {
             return PinState.LOW;
-        } else {
+        } else if (a == PinState.LOW || b == PinState.LOW || c == PinState.LOW || d == PinState.LOW) {
             return PinState.HIGH;
         }
+        return PinState.UNKNOWN;
     }
 }

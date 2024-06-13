@@ -10,10 +10,6 @@ public class IC74152LogicMatrix extends LogicMatrix {
 
     @Override
     public List<PinState> map(List<PinState> input) {
-//        if (!isAllPinStatesKnown(input)) {
-//            return List.of(PinState.UNKNOWN);
-//        }
-
         List<PinState> output = new ArrayList<>();
 
         PinState a = input.get(0);

@@ -10,9 +10,6 @@ import java.util.List;
 public class IC74138LogicMatrix extends LogicMatrix {
     @Override
     public List<PinState> map(List<PinState> input) {
-//        if (!isAllPinStatesKnown(input)) {
-//            return Collections.nCopies(8, PinState.UNKNOWN);
-//        }
         PinState notG2 = getNotG2Input(input.get(3), input.get(4));
         PinState a = input.get(0);
         PinState b = input.get(1);

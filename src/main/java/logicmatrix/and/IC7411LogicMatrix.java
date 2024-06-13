@@ -19,9 +19,9 @@ public class IC7411LogicMatrix extends LogicMatrix {
         if (a == PinState.HIGH && b == PinState.HIGH && c == PinState.HIGH) {
             return PinState.HIGH;
         }
-//        else if (isAnyPinStateUnknown(List.of(a, b, c))) {
-//            return PinState.UNKNOWN;
-//        }
-        return PinState.LOW;
+        else if (a == PinState.LOW || b == PinState.LOW || c == PinState.LOW) {
+            return PinState.LOW;
+        }
+        return PinState.UNKNOWN;
     }
 }

@@ -1,5 +1,3 @@
-package org.example;
-
 import component.ChipComponent;
 import component.SavedLogicComponent;
 import component.ComponentType;
@@ -198,11 +196,15 @@ public class Simulation implements UserInterface {
                             throw new UnknownStateException(new ComponentPinState(connection.componentId(), connection.pinId(), PinState.UNKNOWN));
                         }
                     }
-                    if (currentPin.getState().equals(PinState.UNKNOWN)) {
-                        throw new UnknownStateException(new ComponentPinState(component.getId(), currentPin.getId(), PinState.UNKNOWN));
-                    }
+//                    if (currentPin.getState().equals(PinState.UNKNOWN)) {
+//                        throw new UnknownStateException(new ComponentPinState(component.getId(), currentPin.getId(), PinState.UNKNOWN));
+//                    }
                 }
             }
+        }
+        // save circuit stationary state with initial states
+        for (LogicComponent component : components.values()) {
+            savedComponents.put(component.getId(), new SavedLogicComponent(component));
         }
     }
 
@@ -235,16 +237,16 @@ public class Simulation implements UserInterface {
     @Override
     public Set<Integer> optimize(Set<ComponentPinState> states0, int ticks) throws UnknownStateException {
         // call stationaryState
-        stationaryState(Collections.emptySet());
+//        stationaryState(Collections.emptySet());
         // set new states for InputPinHeader
-        setInitialStates(states0);
-        // save circuit stationary state with initial states
-        for (LogicComponent component : components.values()) {
-            savedComponents.put(component.getId(), new SavedLogicComponent(component));
-        }
+//        setInitialStates(states0);
+//        // save circuit stationary state with initial states
+//        for (LogicComponent component : components.values()) {
+//            savedComponents.put(component.getId(), new SavedLogicComponent(component));
+//        }
 
         // get simulation results for original circuit
-        Map<Integer, Set<ComponentPinState>> originSimulationResult = new HashMap<>(simulation(Set.of(), ticks));
+        Map<Integer, Set<ComponentPinState>> originSimulationResult = new HashMap<>(simulation(states0, ticks));
 
         // get all chip ids
         List<Integer> chipIds = new ArrayList<>();
@@ -274,7 +276,7 @@ public class Simulation implements UserInterface {
             }
 
             Map<Integer, Set<ComponentPinState>> simulationResult =
-                    new HashMap<>(simulationWithoutRemovedChips(ticks, combination));
+                    new HashMap<>(simulationWithoutRemovedChips(ticks, combination, states0));
 
             if (isSimulationResultsEqual(originSimulationResult, simulationResult)) {
                 componentsToRemove.add(new HashSet<>(combination));
@@ -284,14 +286,6 @@ public class Simulation implements UserInterface {
             for (LogicComponent component : removedComponents) {
                 components.put(component.getId(), component);
             }
-
-            // load original circuit
-            for (LogicComponent component : components.values()) {
-                SavedLogicComponent loadedComponent = savedComponents.get(component.getId());
-                if (loadedComponent != null) {
-                    loadedComponent.loadChip(component);
-                }
-            }
         }
 
         return new HashSet<>(findMaxPossibleComponentsToRemove(componentsToRemove));
@@ -300,8 +294,18 @@ public class Simulation implements UserInterface {
     private LogicComponent deleteChip(int chipId) {
         LogicComponent component = components.remove(chipId);
         for (Pin pinToRemove : component.getPins()) {
+//            if (pinToRemove != null && pinToRemove.isOutputPin()) {
+//                List<Observer> toDelete = new ArrayList<>();
+//                for (Observer observer : pinToRemove.getObservers()) {
+//                    ((Pin) observer).removeObserver(pinToRemove);
+//                    ((Pin) observer).setState(PinState.UNKNOWN);
+//                    toDelete.add(observer);
+//                }
+//                for (Observer observer : toDelete) {
+//                    pinToRemove.removeObserver(observer);
+//                }
+
             if (pinToRemove != null && pinToRemove.getType().equals(PinType.OUT)) {
-                if (pinToRemove.isConnected()) {
                     List<PinConnection> connections = pinToRemove.getConnectionsToOtherPins();
                     for (PinConnection connection : connections) {
                         LogicComponent connectedComponent = components.get(connection.componentId());
@@ -314,20 +318,21 @@ public class Simulation implements UserInterface {
                             }
                         }
                     }
-                }
-                for (Observer observer : pinToRemove.getObservers()) {
-                    // remove target pin's observers
-                    ((Pin) observer).removeObserver(pinToRemove);
-                }
-//                pinToRemove.setState(PinState.UNKNOWN);
+                    for (Observer observer : pinToRemove.getObservers()) {
+                        // remove target pin's observers
+                        ((Pin) observer).removeObserver(pinToRemove);
+                    }
             }
         }
         return component;
     }
 
-    public Map<Integer, Set<ComponentPinState>> simulationWithoutRemovedChips(int ticks, List<Integer> removedChips){
+    public Map<Integer, Set<ComponentPinState>> simulationWithoutRemovedChips(int ticks,
+                                                                              List<Integer> removedChips,
+                                                                              Set<ComponentPinState> states0){
         Map<Integer, Set<ComponentPinState>> result = new HashMap<>();
         result.put(0, getStatesForTick());
+        setInitialStates(states0);
         for (int i = 1; i <= ticks; i++) {
             for (Map.Entry<Integer, LogicComponent> entry : components.entrySet()) {
                 if (!removedChips.contains(entry.getKey())) {

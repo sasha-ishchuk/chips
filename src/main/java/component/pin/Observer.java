@@ -9,5 +9,5 @@ public interface Observer {
 //    void updatePinStates(List<ConnectedPinsWithStates> connectedPinsWithStates);
 
 
-    void update(PinState state);
+        void update(PinState state);
 }
