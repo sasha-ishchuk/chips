@@ -1,3 +1,5 @@
+package org.example;
+
 import component.ChipComponent;
 import component.SavedLogicComponent;
 import component.ComponentType;

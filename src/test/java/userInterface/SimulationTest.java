@@ -1,7 +1,7 @@
 package userInterface;
 
 import edu.uj.po.simulation.interfaces.ComponentPinState;
-import Simulation;
+import org.example.Simulation;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
