@@ -13,10 +13,6 @@ public abstract class LogicMatrix {
 
     public abstract List<PinState> map(List<PinState> input);
 
-    public boolean isAllPinStatesKnown(List<PinState> input) {
-        return input.stream().noneMatch(pinState -> pinState == PinState.UNKNOWN);
-    }
-
     public boolean isAnyPinStateUnknown(List<PinState> input) {
         return input.stream().anyMatch(pinState -> pinState == PinState.UNKNOWN);
     }

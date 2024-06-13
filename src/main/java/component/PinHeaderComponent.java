@@ -28,10 +28,6 @@ public abstract class PinHeaderComponent implements LogicComponent {
         this.connectedPinsWithStates = connectedPinsWithStates;
     }
 
-    public void clearConnectedPinsWithStates() {
-        connectedPinsWithStates.clear();
-    }
-
     public Set<Integer> getConnectedComponentsIds() {
         return connectedComponentsIds;
     }
@@ -42,10 +38,6 @@ public abstract class PinHeaderComponent implements LogicComponent {
 
     public void addConnectedComponentId(int connectedComponentId) {
         connectedComponentsIds.add(connectedComponentId);
-    }
-
-    public void removeConnectedComponentId(int id) {
-        connectedComponentsIds.remove(id);
     }
 
     @Override

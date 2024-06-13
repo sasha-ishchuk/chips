@@ -71,6 +71,9 @@ public class SimulationUtils {
     }
 
     public static Set<Integer> findMaxPossibleComponentsToRemove(List<Set<Integer>> componentsToRemove) {
+        if (componentsToRemove == null || componentsToRemove.isEmpty()) {
+            return new HashSet<>();
+        }
         Set<Integer> maxPossibleComponentsToRemove = new HashSet<>();
         int max = 0;
         for (Set<Integer> components : componentsToRemove) {

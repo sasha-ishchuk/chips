@@ -11,8 +11,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-
-// it was an interface before
 public abstract class ChipComponent implements LogicComponent {
 
     private int id;
@@ -24,16 +22,20 @@ public abstract class ChipComponent implements LogicComponent {
 
     public abstract List<Pin> getPins();
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getId() {
+        return id;
+    }
+
     public List<ConnectedPinsWithStates> getConnectedPinsWithStates() {
         return connectedPinsWithStates;
     }
 
     public void setConnectedPinsWithStates(List<ConnectedPinsWithStates> connectedPinsWithStates) {
         this.connectedPinsWithStates = connectedPinsWithStates;
-    }
-
-    public void clearConnectedPinsWithStates() {
-        connectedPinsWithStates.clear();
     }
 
     public Set<Integer> getConnectedComponentsIds() {
@@ -44,28 +46,8 @@ public abstract class ChipComponent implements LogicComponent {
         this.connectedComponentsIds = connectedComponentsIds;
     }
 
-    public void removeConnectedComponentId(int id) {
-        connectedComponentsIds.remove(id);
-    }
-
     public void addConnectedComponentId(int connectedComponentId) {
         connectedComponentsIds.add(connectedComponentId);
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void step() {
-        for (Pin pin : getPins()) {
-            if (pin != null) {
-                pin.performStep();
-            }
-        }
     }
 
     public List<PinState> getInPins() {
@@ -91,8 +73,16 @@ public abstract class ChipComponent implements LogicComponent {
     @Override
     public void simulate() {
         List<PinState> ins = getInPins();
-        List<PinState> outs = getLogicMatrix().map(ins);
+        List<PinState> outs = getLogicMatrix().getResult(ins);
         setOutPins(outs);
+    }
+
+    public void step() {
+        for (Pin pin : getPins()) {
+            if (pin != null) {
+                pin.performStep();
+            }
+        }
     }
 
     public boolean hasStateChanged() {
@@ -112,13 +102,5 @@ public abstract class ChipComponent implements LogicComponent {
                 pin.resetStateChanged();
             }
         }
-    }
-
-    public int getCode() {
-        return code;
-    }
-
-    public void setCode(int code) {
-        this.code = code;
     }
 }
