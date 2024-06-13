@@ -47,6 +47,7 @@ import java.util.Map;
 import java.util.Set;
 
 import static utils.SimulationUtils.findMaxPossibleComponentsToRemove;
+import static utils.SimulationUtils.generateComponentCombinations;
 import static utils.SimulationUtils.isSimulationResultsEqual;
 
 public class Simulation implements UserInterface {
@@ -235,7 +236,7 @@ public class Simulation implements UserInterface {
         }
 
         // generate combinations
-        List<List<Integer>> combinations = SimulationUtils.generateComponentCombinations(chipIds);
+        List<List<Integer>> combinations = generateComponentCombinations(chipIds);
 
         // define list of components to remove
         List<Set<Integer>> componentsToRemove = new ArrayList<>();
