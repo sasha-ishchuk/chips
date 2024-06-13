@@ -22,25 +22,25 @@ public class SavedLogicComponent {
 
     public SavedLogicComponent(LogicComponent component) {
         for (Pin pin : component.getPins()) {
-            this.chipPins.put(pin.getId(), pin.getState());
-            this.componentObservers.put(pin.getId(), pin.getObservers());
+            chipPins.put(pin.getId(), pin.getState());
+            componentObservers.put(pin.getId(), pin.getObservers());
         }
-        this.connectionIds.addAll(component.getConnectedComponentsIds());
-        this.componentType = component.getComponentType();
-        this.componentConnectedPinsWithStates.addAll(component.getConnectedPinsWithStates());
+        connectionIds.addAll(component.getConnectedComponentsIds());
+        componentType = component.getComponentType();
+        componentConnectedPinsWithStates.addAll(component.getConnectedPinsWithStates());
     }
 
     public void loadChip(LogicComponent component) {
-        for (Map.Entry<Integer, PinState> entry : this.chipPins.entrySet()) {
+        for (Map.Entry<Integer, PinState> entry : chipPins.entrySet()) {
             component.getPin(entry.getKey()).setState(entry.getValue());
         }
-        for (Map.Entry<Integer, Set<Observer>> entry : this.componentObservers.entrySet()) {
+        for (Map.Entry<Integer, Set<Observer>> entry : componentObservers.entrySet()) {
             for (Observer observer : entry.getValue()) {
                 component.getPin(entry.getKey()).addObserver(observer);
             }
         }
-        component.setConnectedComponentsIds(this.connectionIds);
-        component.setComponentType(this.componentType);
-        component.setConnectedPinsWithStates(this.componentConnectedPinsWithStates);
+        component.setConnectedComponentsIds(connectionIds);
+        component.setComponentType(componentType);
+        component.setConnectedPinsWithStates(componentConnectedPinsWithStates);
     }
 }
