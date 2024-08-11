@@ -1,15 +1,16 @@
 package component.chip.and;
 
-import component.chip.and.IC7408Creator;
+import org.example.component.chip.and.IC7408Creator;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import component.ChipComponent;
-import component.chip.ChipCreator;
-import component.pin.Pin;
-import edu.uj.po.simulation.interfaces.PinState;
-import logicmatrix.and.IC7408LogicMatrix;
+import org.example.component.ChipComponent;
+import org.example.component.chip.ChipCreator;
+import org.example.component.pin.Pin;
+import org.example.edu.uj.po.simulation.interfaces.PinState;
+import org.example.logicmatrix.and.IC7408LogicMatrix;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -46,7 +47,8 @@ public class IC7408Test {
         ic7408.getPin(9).setState(PinState.LOW);
         ic7408.getPin(10).setState(PinState.HIGH);
         // when
-        List<Pin> outputPins = ic7408.simulate();
+        List<Pin> outputPins = new ArrayList<>();
+        ic7408.simulate();
         // then
         assertEquals(outputPins.size(), 4);
         assertEquals(outputPins.get(0).getId(), 3);

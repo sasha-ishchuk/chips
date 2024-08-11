@@ -1,16 +1,17 @@
 package component.chip.or;
 
-import component.chip.or.IC7432Creator;
+import org.example.component.chip.or.IC7432Creator;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import component.ChipComponent;
-import component.chip.ChipCreator;
-import component.pin.Pin;
-import edu.uj.po.simulation.interfaces.PinState;
-import edu.uj.po.simulation.interfaces.UnknownPin;
-import logicmatrix.or.IC7432LogicMatrix;
+import org.example.component.ChipComponent;
+import org.example.component.chip.ChipCreator;
+import org.example.component.pin.Pin;
+import org.example.edu.uj.po.simulation.interfaces.PinState;
+import org.example.edu.uj.po.simulation.interfaces.UnknownPin;
+import org.example.logicmatrix.or.IC7432LogicMatrix;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -47,7 +48,8 @@ public class IC7432Test {
         ic7432.getPin(12).setState(PinState.HIGH);
         ic7432.getPin(13).setState(PinState.HIGH);
         // when
-        List<Pin> outputPins = ic7432.simulate();
+        List<Pin> outputPins = new ArrayList<>();
+        ic7432.simulate();
         // then
         assertEquals(outputPins.size(), 4);
         assertEquals(outputPins.get(0).getId(), 3);
