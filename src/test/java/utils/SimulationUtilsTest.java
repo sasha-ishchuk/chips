@@ -1,7 +1,8 @@
 package utils;
 
-import edu.uj.po.simulation.interfaces.ComponentPinState;
-import edu.uj.po.simulation.interfaces.PinState;
+import org.example.edu.uj.po.simulation.interfaces.ComponentPinState;
+import org.example.edu.uj.po.simulation.interfaces.PinState;
+import org.example.utils.SimulationUtils;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;

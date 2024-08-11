@@ -1,7 +1,7 @@
 package yehortest;
 
-import component.chip.decoder.IC7442;
-import edu.uj.po.simulation.interfaces.PinState;
+import org.example.component.chip.decoder.IC7442;
+import org.example.edu.uj.po.simulation.interfaces.PinState;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

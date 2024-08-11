@@ -1,17 +1,17 @@
 package userInterface;
 
-import edu.uj.po.simulation.interfaces.ComponentPinState;
+import org.example.edu.uj.po.simulation.interfaces.ComponentPinState;
 import org.example.Simulation;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import component.LogicComponent;
-import edu.uj.po.simulation.interfaces.PinState;
-import edu.uj.po.simulation.interfaces.ShortCircuitException;
-import edu.uj.po.simulation.interfaces.UnknownChip;
-import edu.uj.po.simulation.interfaces.UnknownComponent;
-import edu.uj.po.simulation.interfaces.UnknownPin;
-import edu.uj.po.simulation.interfaces.UnknownStateException;
+import org.example.component.LogicComponent;
+import org.example.edu.uj.po.simulation.interfaces.PinState;
+import org.example.edu.uj.po.simulation.interfaces.ShortCircuitException;
+import org.example.edu.uj.po.simulation.interfaces.UnknownChip;
+import org.example.edu.uj.po.simulation.interfaces.UnknownComponent;
+import org.example.edu.uj.po.simulation.interfaces.UnknownPin;
+import org.example.edu.uj.po.simulation.interfaces.UnknownStateException;
 
 import java.util.Map;
 import java.util.Set;
