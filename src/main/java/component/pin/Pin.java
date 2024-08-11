@@ -6,6 +6,14 @@ import edu.uj.po.simulation.interfaces.PinState;
 import java.util.List;
 import java.util.Set;
 
+/*
+    Pin class is an abstract class that represents a pin in a component.
+    Pin is Observer and Publisher at the same time.
+    Publisher:  Pin has list of observers, can add, remove and notify them about changes.
+                The observers are publishers at the same time.
+    Observer:   Pin observes changes in other pins and reacts to them.
+                It has update method that is called when observed pin changes its state.
+ */
 public abstract class Pin implements Observer, Publisher {
 
     private int parentComponentId;
