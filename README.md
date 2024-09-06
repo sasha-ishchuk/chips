@@ -14,3 +14,13 @@ IMPORTANT:
 the current state of their inputs only after some time (signal propagation time)
 - the signal propagation time (the time needed for the outputs to obtain a state corresponding to the input state) 
 will be constant and identical for all circuits
+
+
+____
+### TODO: 
+- [ ] finish README
+- [ ] add class diagram
+- [ ] add example images of simulations
+- [ ] describe design patterns used
+- [ ] fix and refactor tests
+- [ ] add more tests for simulations
