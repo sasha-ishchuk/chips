@@ -102,4 +102,11 @@ public abstract class ChipComponent implements LogicComponent {
             }
         }
     }
+
+    // for tests
+    public List<Pin> getOutputPins() {
+        return getPins().stream()
+                .filter(Pin::isOutputPin)
+                .toList();
+    }
 }

@@ -1,7 +1,6 @@
 package component.pinheader;
 
 import org.example.Simulation;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.example.component.PinHeaderComponent;
@@ -28,12 +27,12 @@ public class PinHeaderTest {
         inPinHeader.getPin(2).setState(PinState.LOW);
         inPinHeader.getPin(3).setState(PinState.HIGH);
         assertEquals(3, inPinHeader.getSize());
-        Assertions.assertEquals(PinType.OUT, inPinHeader.getPin(1).getType());
-        Assertions.assertEquals(PinType.OUT, inPinHeader.getPin(2).getType());
-        Assertions.assertEquals(PinType.OUT, inPinHeader.getPin(3).getType());
-        Assertions.assertEquals(PinState.HIGH, inPinHeader.getPin(1).getState());
-        Assertions.assertEquals(PinState.LOW, inPinHeader.getPin(2).getState());
-        Assertions.assertEquals(PinState.HIGH, inPinHeader.getPin(3).getState());
+        assertEquals(PinType.OUT, inPinHeader.getPin(1).getType());
+        assertEquals(PinType.OUT, inPinHeader.getPin(2).getType());
+        assertEquals(PinType.OUT, inPinHeader.getPin(3).getType());
+        assertEquals(PinState.HIGH, inPinHeader.getPin(1).getState());
+        assertEquals(PinState.LOW, inPinHeader.getPin(2).getState());
+        assertEquals(PinState.HIGH, inPinHeader.getPin(3).getState());
     }
 
     @Test
@@ -43,11 +42,11 @@ public class PinHeaderTest {
         outPinHeader.getPin(2).setState(PinState.LOW);
         outPinHeader.getPin(3).setState(PinState.HIGH);
         assertEquals(3, outPinHeader.getSize());
-        Assertions.assertEquals(PinType.IN, outPinHeader.getPin(1).getType());
-        Assertions.assertEquals(PinType.IN, outPinHeader.getPin(2).getType());
-        Assertions.assertEquals(PinType.IN, outPinHeader.getPin(3).getType());
-        Assertions.assertEquals(PinState.HIGH, outPinHeader.getPin(1).getState());
-        Assertions.assertEquals(PinState.LOW, outPinHeader.getPin(2).getState());
-        Assertions.assertEquals(PinState.HIGH, outPinHeader.getPin(3).getState());
+        assertEquals(PinType.IN, outPinHeader.getPin(1).getType());
+        assertEquals(PinType.IN, outPinHeader.getPin(2).getType());
+        assertEquals(PinType.IN, outPinHeader.getPin(3).getType());
+        assertEquals(PinState.HIGH, outPinHeader.getPin(1).getState());
+        assertEquals(PinState.LOW, outPinHeader.getPin(2).getState());
+        assertEquals(PinState.HIGH, outPinHeader.getPin(3).getState());
     }
 }

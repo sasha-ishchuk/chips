@@ -42,10 +42,8 @@ public class SimulationUtilsTest {
                 1, Set.of(new ComponentPinState(4, 1, PinState.HIGH)),
                 2, Set.of(new ComponentPinState(4, 2, PinState.LOW))
         );
-        // when
-        boolean result = SimulationUtils.isSimulationResultsEqual(initialResult, optimizationResult);
-        // then
-        assertTrue(result);
+        // when/then
+        assertTrue(SimulationUtils.isSimulationResultsEqual(initialResult, optimizationResult));
     }
 
     @Test
@@ -59,9 +57,7 @@ public class SimulationUtilsTest {
                 1, Set.of(new ComponentPinState(4, 1, PinState.LOW)),
                 2, Set.of(new ComponentPinState(4, 2, PinState.LOW))
         );
-        // when
-        boolean result = SimulationUtils.isSimulationResultsEqual(initialResult, optimizationResult);
-        // then
-        assertFalse(result);
+        // when/then
+        assertFalse(SimulationUtils.isSimulationResultsEqual(initialResult, optimizationResult));
     }
 }

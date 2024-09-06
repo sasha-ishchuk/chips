@@ -1,18 +1,12 @@
 package component.chip.nand;
 
-import org.example.component.chip.nand.IC7410Creator;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.example.component.ChipComponent;
 import org.example.component.chip.ChipCreator;
-import org.example.component.pin.Pin;
+import org.example.component.chip.nand.IC7410Creator;
 import org.example.edu.uj.po.simulation.interfaces.PinState;
-import org.example.edu.uj.po.simulation.interfaces.UnknownPin;
 import org.example.logicmatrix.nand.IC7410LogicMatrix;
-
-import java.util.ArrayList;
-import java.util.List;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -28,9 +22,9 @@ public class IC7410Test {
     }
 
     @Test
-    void testGetPin() throws UnknownPin {
+    void testGetPin() {
         assertNotNull(ic7410.getPin(1));
-        Assertions.assertEquals(PinState.UNKNOWN, ic7410.getPin(1).getState());
+        assertEquals(PinState.UNKNOWN, ic7410.getPin(1).getState());
     }
 
     @Test
@@ -39,7 +33,7 @@ public class IC7410Test {
     }
 
     @Test
-    void testSimulateWithInput() throws UnknownPin {
+    void testSimulateWithInput() {
         // given
         ic7410.getPin(3).setState(PinState.HIGH);
         ic7410.getPin(4).setState(PinState.HIGH);
@@ -53,15 +47,16 @@ public class IC7410Test {
         ic7410.getPin(2).setState(PinState.HIGH);
         ic7410.getPin(13).setState(PinState.HIGH);
         // when
-        List<Pin> outputPins = new ArrayList<>();
         ic7410.simulate();
+        ic7410.step();
         // then
-        assertEquals(outputPins.size(), 3);
-        assertEquals(outputPins.get(0).getId(), 6);
-        Assertions.assertEquals(outputPins.get(0).getState(), PinState.LOW);
-        assertEquals(outputPins.get(1).getId(), 8);
-        Assertions.assertEquals(outputPins.get(1).getState(), PinState.HIGH);
-        assertEquals(outputPins.get(2).getId(), 12);
-        Assertions.assertEquals(outputPins.get(2).getState(), PinState.LOW);
+        var outputPins = ic7410.getOutputPins();
+        assertEquals(3, outputPins.size());
+        assertEquals(6, outputPins.get(0).getId());
+        assertEquals(PinState.LOW, outputPins.get(0).getState());
+        assertEquals(8, outputPins.get(1).getId());
+        assertEquals(PinState.HIGH, outputPins.get(1).getState());
+        assertEquals(12, outputPins.get(2).getId());
+        assertEquals(PinState.LOW, outputPins.get(2).getState());
     }
 }
