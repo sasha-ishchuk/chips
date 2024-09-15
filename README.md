@@ -22,5 +22,5 @@ ____
 - [ ] add class diagram
 - [ ] add example images of simulations
 - [ ] describe design patterns used
-- [ ] fix and refactor tests
+- [x] fix and refactor tests
 - [ ] add more tests for simulations
