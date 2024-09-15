@@ -1,16 +1,14 @@
 package yehortest;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import org.example.Simulation;
 import org.example.component.LogicComponent;
 import org.example.edu.uj.po.simulation.interfaces.ComponentPinState;
 import org.example.edu.uj.po.simulation.interfaces.PinState;
-import org.example.edu.uj.po.simulation.interfaces.ShortCircuitException;
-import org.example.edu.uj.po.simulation.interfaces.UnknownChip;
-import org.example.edu.uj.po.simulation.interfaces.UnknownComponent;
-import org.example.edu.uj.po.simulation.interfaces.UnknownPin;
 import org.example.edu.uj.po.simulation.interfaces.UnknownStateException;
-import org.example.Simulation;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -20,13 +18,13 @@ import static junit.framework.Assert.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class SimulationTest {
+class SimulationTest {
     private Simulation userInterface;
     private int pinHeaderInputId;
     private int pinHeaderOutputId;
 
-//    @BeforeEach
-    public void setUp() throws Exception {
+    @BeforeEach
+    void setUp() throws Exception {
         userInterface = new Simulation();
 
         pinHeaderInputId = userInterface.createInputPinHeader(3);  // 3 inputs: We1, We2, We4
@@ -63,7 +61,7 @@ public class SimulationTest {
     }
 
     @Test
-    public void testStationaryState() throws UnknownStateException, UnknownChip, UnknownPin, ShortCircuitException, UnknownComponent {
+    void testStationaryState() throws UnknownStateException {
         Set<ComponentPinState> initialStates = new HashSet<>();
         initialStates.add(new ComponentPinState(pinHeaderInputId, 1, PinState.HIGH)); // We1 - HI
         initialStates.add(new ComponentPinState(pinHeaderInputId, 2, PinState.LOW));  // We2 - LO
@@ -79,7 +77,7 @@ public class SimulationTest {
     }
 
     @Test
-    public void testSimulation() throws Exception {
+    void testSimulation() throws UnknownStateException {
         // Define the initial stationary state
         Set<ComponentPinState> stationaryStates = new HashSet<>();
         stationaryStates.add(new ComponentPinState(pinHeaderInputId, 1, PinState.HIGH)); // We1
@@ -127,7 +125,7 @@ public class SimulationTest {
     }
 
     @Test
-    public void testOptimization() throws Exception {
+    void testOptimization() throws UnknownStateException {
         // Define the initial stationary state
         Set<ComponentPinState> stationaryStates = new HashSet<>();
         stationaryStates.add(new ComponentPinState(pinHeaderInputId, 1, PinState.HIGH)); // We1
@@ -212,11 +210,6 @@ public class SimulationTest {
 
         // 0, 1, 1, 0, 0, 1, 1
         userInterface.stationaryState(stationaryStates);
-//
-//        L component = userInterface.getCircuit().getComponentById(pinHeaderOutputId);
-//        assertEquals(PinState.LOW, component.getPin(1).getState());
-//        assertEquals(PinState.LOW, component.getPin(2).getState());
-
 
         // Define the initial state for the simulation
         Set<ComponentPinState> initialStates = new HashSet<>();
@@ -240,7 +233,6 @@ public class SimulationTest {
         );
 
         // Validate the results at each tick
-
         for (int tick = 0; tick <= 3; tick++) {
             Set<ComponentPinState> statesAtTick = simulationResults.get(tick);
             for (ComponentPinState state : statesAtTick) {
@@ -250,11 +242,10 @@ public class SimulationTest {
 
         userInterface.stationaryState(stationaryStates);
 
-// Test the optimize method
+        // Test the optimize method
         Set<Integer> removableComponents = userInterface.optimize(initialStates, 2);
         assertTrue(removableComponents.contains(chip7408IdU1)); // U01 should be removable
         assertFalse(removableComponents.contains(chip7408IdU2)); // U02 should not be removable
         assertFalse(removableComponents.contains(chip7408IdU3)); // U03 should not be removable
-
     }
 }

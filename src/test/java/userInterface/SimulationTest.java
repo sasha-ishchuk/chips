@@ -19,16 +19,16 @@ import java.util.Set;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class SimulationTest {
-    Simulation userInterface;
+class SimulationTest {
+    private Simulation userInterface;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         userInterface = new Simulation();
     }
 
     @Test
-    public void testSimulation_forAndAndNot_oramusExample() throws UnknownChip, UnknownPin, ShortCircuitException, UnknownComponent, UnknownStateException {
+    void testSimulation_forAndAndNot_oramusExample() throws UnknownChip, UnknownPin, ShortCircuitException, UnknownComponent, UnknownStateException {
         // create components
         int inPinHeaderId = userInterface.createInputPinHeader(3);
         int and7408 = userInterface.createChip(7408);
@@ -69,44 +69,24 @@ public class SimulationTest {
         assertTrue(result.containsKey(3)); // tick 3
 
         Set<ComponentPinState> statesTick0 = result.get(0);
-//        assertEquals(8, statesTick0.size());
-//        assertTrue(statesTick0.contains(new ComponentPinState(and7408, 4, PinState.HIGH)));
-//        assertTrue(statesTick0.contains(new ComponentPinState(and7408, 5, PinState.HIGH)));
-//        assertTrue(statesTick0.contains(new ComponentPinState(and7408, 12, PinState.HIGH)));
-//        assertTrue(statesTick0.contains(new ComponentPinState(and7408, 13, PinState.HIGH)));
         assertTrue(statesTick0.contains(new ComponentPinState(outPinHeaderId, 1, PinState.LOW)));
         assertTrue(statesTick0.contains(new ComponentPinState(outPinHeaderId, 2, PinState.HIGH)));
         assertTrue(statesTick0.contains(new ComponentPinState(outPinHeaderId, 3, PinState.LOW)));
         assertTrue(statesTick0.contains(new ComponentPinState(outPinHeaderId, 4, PinState.HIGH)));
 
         Set<ComponentPinState> statesTick1 = result.get(1);
-//        assertEquals(8, statesTick1.size());
-//        assertTrue(statesTick1.contains(new ComponentPinState(and7408, 4, PinState.HIGH)));
-//        assertTrue(statesTick1.contains(new ComponentPinState(and7408, 5, PinState.HIGH)));
-//        assertTrue(statesTick1.contains(new ComponentPinState(and7408, 12, PinState.HIGH)));
-//        assertTrue(statesTick1.contains(new ComponentPinState(and7408, 13, PinState.HIGH)));
         assertTrue(statesTick1.contains(new ComponentPinState(outPinHeaderId, 1, PinState.HIGH)));
         assertTrue(statesTick1.contains(new ComponentPinState(outPinHeaderId, 2, PinState.HIGH)));
         assertTrue(statesTick1.contains(new ComponentPinState(outPinHeaderId, 3, PinState.LOW)));
         assertTrue(statesTick1.contains(new ComponentPinState(outPinHeaderId, 4, PinState.HIGH)));
 
         Set<ComponentPinState> statesTick2 = result.get(2);
-//        assertEquals(8, statesTick2.size());
-//        assertTrue(statesTick2.contains(new ComponentPinState(and7408, 4, PinState.HIGH)));
-//        assertTrue(statesTick2.contains(new ComponentPinState(and7408, 5, PinState.LOW)));
-//        assertTrue(statesTick2.contains(new ComponentPinState(and7408, 12, PinState.HIGH)));
-//        assertTrue(statesTick2.contains(new ComponentPinState(and7408, 13, PinState.HIGH)));
         assertTrue(statesTick2.contains(new ComponentPinState(outPinHeaderId, 1, PinState.HIGH)));
         assertTrue(statesTick2.contains(new ComponentPinState(outPinHeaderId, 2, PinState.LOW)));
         assertTrue(statesTick2.contains(new ComponentPinState(outPinHeaderId, 3, PinState.LOW)));
         assertTrue(statesTick2.contains(new ComponentPinState(outPinHeaderId, 4, PinState.HIGH)));
 
         Set<ComponentPinState> statesTick3 = result.get(3);
-//        assertEquals(8, statesTick3.size());
-//        assertTrue(statesTick3.contains(new ComponentPinState(and7408, 4, PinState.HIGH)));
-//        assertTrue(statesTick3.contains(new ComponentPinState(and7408, 5, PinState.LOW)));
-//        assertTrue(statesTick3.contains(new ComponentPinState(and7408, 12, PinState.HIGH)));
-//        assertTrue(statesTick3.contains(new ComponentPinState(and7408, 13, PinState.HIGH)));
         assertTrue(statesTick3.contains(new ComponentPinState(outPinHeaderId, 1, PinState.HIGH)));
         assertTrue(statesTick3.contains(new ComponentPinState(outPinHeaderId, 2, PinState.LOW)));
         assertTrue(statesTick3.contains(new ComponentPinState(outPinHeaderId, 3, PinState.HIGH)));
@@ -126,7 +106,7 @@ public class SimulationTest {
     }
 
     @Test
-    public void testSimulation_forAndAndNot_oramusExample_reverseConnection() throws UnknownChip, UnknownPin, ShortCircuitException, UnknownComponent, UnknownStateException {
+    void testSimulation_forAndAndNot_oramusExample_reverseConnection() throws UnknownChip, UnknownPin, ShortCircuitException, UnknownComponent, UnknownStateException {
         // create components
         int inPinHeaderId = userInterface.createInputPinHeader(3);
         int and7408 = userInterface.createChip(7408);
@@ -205,7 +185,7 @@ public class SimulationTest {
     }
 
     @Test
-    public void testSimulation_forThreeAnd_oramusExampleForDeleteComponent() throws UnknownChip, UnknownPin, ShortCircuitException, UnknownComponent, UnknownStateException {
+    void testSimulation_forThreeAnd_oramusExampleForDeleteComponent() throws UnknownChip, UnknownPin, ShortCircuitException, UnknownComponent, UnknownStateException {
         // create components
         int inPinHeaderId = userInterface.createInputPinHeader(7);
         int and7408_1 = userInterface.createChip(7408);
@@ -296,12 +276,10 @@ public class SimulationTest {
             1   	LO	    LO	    LO
             2   	LO	    LO	    HI
         */
-
-
     }
 
     @Test
-    public void testOptimization_forThreeAnd_oramusExampleForDeleteComponent() throws UnknownChip, UnknownPin, ShortCircuitException, UnknownComponent, UnknownStateException {
+    void testOptimization_forThreeAnd_oramusExampleForDeleteComponent() throws UnknownChip, UnknownPin, ShortCircuitException, UnknownComponent, UnknownStateException {
         // create components
         int inPinHeaderId = userInterface.createInputPinHeader(7);
         int and7408_1 = userInterface.createChip(7408);
@@ -369,7 +347,7 @@ public class SimulationTest {
         );
 
         // simulate
-        Map<Integer, Set<ComponentPinState>> result = userInterface.simulation(componentPinStatesInitial, 2);
+        userInterface.simulation(componentPinStatesInitial, 2);
 
         // stationary state
         userInterface.stationaryState(componentPinStates);
@@ -385,11 +363,5 @@ public class SimulationTest {
             1   	LO	    LO	    LO
             2   	LO	    LO	    HI
         */
-
-//        StationaryStateCircuit stationaryStateCircuit = userInterface.getStationaryStateCircuit();
-//        stationaryStateCircuit.loadStationaryStateCircuit();
-
     }
-
-
 }

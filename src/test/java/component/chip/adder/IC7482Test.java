@@ -13,8 +13,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class IC7482Test {
-    ChipCreator creator = new IC7482Creator();
+class IC7482Test {
+    private final ChipCreator creator = new IC7482Creator();
     private ChipComponent ic7482;
 
     @BeforeEach

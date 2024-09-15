@@ -1,27 +1,18 @@
 package component.pinheader;
 
-import org.example.Simulation;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.example.component.PinHeaderComponent;
 import org.example.component.pin.PinType;
 import org.example.component.pinheader.in.InPinHeaderCreator;
 import org.example.component.pinheader.out.OutPinHeaderCreator;
 import org.example.edu.uj.po.simulation.interfaces.PinState;
-import org.example.edu.uj.po.simulation.interfaces.UserInterface;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class PinHeaderTest {
-    UserInterface userInterface;
-
-    @BeforeEach
-    public void setUp() {
-        userInterface = new Simulation();
-    }
+class PinHeaderTest {
 
     @Test
-    public void testInPinHeader() {
+    void testInPinHeader() {
         PinHeaderComponent inPinHeader = new InPinHeaderCreator().createPinHeader(3);
         inPinHeader.getPin(1).setState(PinState.HIGH);
         inPinHeader.getPin(2).setState(PinState.LOW);
@@ -36,7 +27,7 @@ public class PinHeaderTest {
     }
 
     @Test
-    public void testOutPinHeader() {
+    void testOutPinHeader() {
         PinHeaderComponent outPinHeader = new OutPinHeaderCreator().createPinHeader(3);
         outPinHeader.getPin(1).setState(PinState.HIGH);
         outPinHeader.getPin(2).setState(PinState.LOW);

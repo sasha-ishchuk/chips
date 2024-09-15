@@ -21,16 +21,16 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class StationaryStateTest {
-    Simulation userInterface;
+class StationaryStateTest {
+    private Simulation userInterface;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         userInterface = new Simulation();
     }
 
     @Test
-    public void testInPinHeader() {
+    void testInPinHeader() {
         PinHeaderComponent inPinHeader = new InPinHeaderCreator().createPinHeader(3);
         inPinHeader.getPin(1).setState(PinState.HIGH);
         inPinHeader.getPin(2).setState(PinState.LOW);
@@ -45,7 +45,7 @@ public class StationaryStateTest {
     }
 
     @Test
-    public void testOutPinHeader() {
+    void testOutPinHeader() {
         PinHeaderComponent outPinHeader = new OutPinHeaderCreator().createPinHeader(3);
         outPinHeader.getPin(1).setState(PinState.HIGH);
         outPinHeader.getPin(2).setState(PinState.LOW);
@@ -60,7 +60,7 @@ public class StationaryStateTest {
     }
 
     @Test
-    public void testStationaryState_forNandAndNot() throws UnknownChip, UnknownPin, ShortCircuitException, UnknownComponent, UnknownStateException {
+    void testStationaryState_forNandAndNot() throws UnknownChip, UnknownPin, ShortCircuitException, UnknownComponent, UnknownStateException {
         int inPinHeaderId = userInterface.createInputPinHeader(3);
         Set<ComponentPinState> componentPinStates = Set.of(
                 new ComponentPinState(inPinHeaderId, 1, PinState.HIGH), // we1
@@ -99,7 +99,7 @@ public class StationaryStateTest {
     }
 
     @Test
-    public void testStationaryState_forAndAndNot_1() throws UnknownChip, UnknownPin, ShortCircuitException, UnknownComponent, UnknownStateException {
+    void testStationaryState_forAndAndNot_1() throws UnknownChip, UnknownPin, ShortCircuitException, UnknownComponent, UnknownStateException {
         int inPinHeaderId = userInterface.createInputPinHeader(3);
         Set<ComponentPinState> componentPinStates = Set.of(
                 new ComponentPinState(inPinHeaderId, 1, PinState.HIGH), // we1
@@ -145,7 +145,7 @@ public class StationaryStateTest {
     }
 
     @Test
-    public void testStationaryState_forAndAndNot_1_reverseConnections() throws UnknownChip, UnknownPin, ShortCircuitException, UnknownComponent, UnknownStateException {
+    void testStationaryState_forAndAndNot_1_reverseConnections() throws UnknownChip, UnknownPin, ShortCircuitException, UnknownComponent, UnknownStateException {
         int inPinHeaderId = userInterface.createInputPinHeader(3);
         Set<ComponentPinState> componentPinStates = Set.of(
                 new ComponentPinState(inPinHeaderId, 1, PinState.HIGH), // we1
@@ -191,7 +191,7 @@ public class StationaryStateTest {
     }
 
     @Test
-    public void testStationaryState_forAndAndNot_2() throws UnknownChip, UnknownPin, ShortCircuitException, UnknownComponent, UnknownStateException {
+    void testStationaryState_forAndAndNot_2() throws UnknownChip, UnknownPin, ShortCircuitException, UnknownComponent, UnknownStateException {
         int inPinHeaderId = userInterface.createInputPinHeader(3);
         Set<ComponentPinState> componentPinStates = Set.of(
                 new ComponentPinState(inPinHeaderId, 1, PinState.HIGH), // we1
@@ -242,7 +242,7 @@ public class StationaryStateTest {
     }
 
     @Test
-    public void testStationaryState_forThreeAnd_oramusExampleForDeleteComponent() throws UnknownChip, UnknownPin, ShortCircuitException, UnknownComponent, UnknownStateException {
+    void testStationaryState_forThreeAnd_oramusExampleForDeleteComponent() throws UnknownChip, UnknownPin, ShortCircuitException, UnknownComponent, UnknownStateException {
         // create components
         int inPinHeaderId = userInterface.createInputPinHeader(7);
         int and7408_1 = userInterface.createChip(7408);
@@ -295,6 +295,5 @@ public class StationaryStateTest {
             We9     LO - U3 13
             We10    LO - U3 4
         */
-
     }
 }

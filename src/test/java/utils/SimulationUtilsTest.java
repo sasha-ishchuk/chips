@@ -13,10 +13,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class SimulationUtilsTest {
+class SimulationUtilsTest {
 
     @Test
-    public void testGenerateComponentCombinations() {
+    void testGenerateComponentCombinations() {
         // given
         List<Integer> componentIds = List.of(1, 2, 3);
         // when
@@ -32,7 +32,7 @@ public class SimulationUtilsTest {
     }
 
     @Test
-    public void testIsSimulationResultsEqual() {
+    void testIsSimulationResultsEqual() {
         // given
         Map<Integer, Set<ComponentPinState>> initialResult = Map.of(
                 1, Set.of(new ComponentPinState(4, 1, PinState.HIGH)),
@@ -47,7 +47,7 @@ public class SimulationUtilsTest {
     }
 
     @Test
-    public void testIsSimulationResultsNotEqual() {
+    void testIsSimulationResultsNotEqual() {
         // given
         Map<Integer, Set<ComponentPinState>> initialResult = Map.of(
                 1, Set.of(new ComponentPinState(4, 1, PinState.HIGH)),
